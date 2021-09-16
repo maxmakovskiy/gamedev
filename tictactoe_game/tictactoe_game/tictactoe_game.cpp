@@ -17,11 +17,11 @@ LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
-                    HINSTANCE hPrevInstance,
-                    LPWSTR    lpCmdLine,
-                    int       nCmdShow)
+                   HINSTANCE hPrevInstance,
+                   LPWSTR    lpCmdLine,
+                   int       nCmdShow)
 {
-    // Perform application initialization:
+    // Perform application initialization
     MyRegisterClass(hInstance);
     if (!InitInstance (hInstance, nCmdShow))
     {
@@ -40,13 +40,7 @@ int WINAPI wWinMain(HINSTANCE hInstance,
     return (int) msg.wParam;
 }
 
-
-
-//
-//  FUNCTION: MyRegisterClass()
-//
 //  PURPOSE: Registers the window class.
-//
 ATOM MyRegisterClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW winclass;
@@ -68,23 +62,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
     return RegisterClassExW(&winclass);
 }
 
-//
-//   FUNCTION: InitInstance(HINSTANCE, int)
-//
 //   PURPOSE: Saves instance handle and creates main window
-//
-//   COMMENTS:
-//
-//        In this function, we save the instance handle in a global variable and
-//        create and display the main program window.
-//
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
    hInst = hInstance; // Store instance handle in our global variable
 
    HWND hWnd = CreateWindowW(
        szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW|WS_VISIBLE),
-       0, 0, 400, 400,
+       0, 0, 600, 600,
        NULL, NULL, hInstance, NULL);
 
    if (!hWnd)
@@ -98,28 +83,48 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
    return TRUE;
 }
 
-//
-//  FUNCTION: WndProc(HWND, UINT, WPARAM, LPARAM)
-//
 //  PURPOSE: Processes messages for the main window.
-//
-//  WM_COMMAND  - process the application menu
-//  WM_PAINT    - Paint the main window
-//  WM_DESTROY  - post a quit message and return
-//
-//
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
+    const int CELL_SIZE = 100;
 
     switch (message)
     {
+    case WM_CREATE:
+    {
+        // mock of window center procedure
+        SetWindowPos(hWnd, 0, 100, 100, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+    } break;
+    case WM_GETMINMAXINFO:
+    {
+        MINMAXINFO* pMinMax = (MINMAXINFO*)lParam;
+        pMinMax->ptMinTrackSize.x = CELL_SIZE * 5;
+        pMinMax->ptMinTrackSize.y = CELL_SIZE * 5;
+
+    } break;
     case WM_PAINT:
     {
         hdc = BeginPaint(hWnd, &ps);
+        // redraw client area
 
-        // redraw window
+        // we need to calculate center of client area
+        RECT rc;
+        if (GetClientRect(hWnd, &rc))
+        {
+            int width = rc.right - rc.left;
+            int height = rc.bottom - rc.top;
+
+            // calculate sides of rectangular gameboard
+            int left = (width - CELL_SIZE * 3) / 2;
+            int top = (height - CELL_SIZE * 3) / 2;
+            int right = left + CELL_SIZE * 3;
+            int bottom = top + CELL_SIZE * 3;
+            
+            Rectangle(hdc, left, top, right, bottom);
+
+        }
 
         EndPaint(hWnd, &ps);
     } break;
