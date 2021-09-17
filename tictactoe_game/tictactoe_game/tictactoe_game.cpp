@@ -18,6 +18,7 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL                GetGameboardRect(HWND, RECT*);
 void                DrawLine(HDC, int, int, int, int, bool);
+int                 GetCellNumber(HWND, int, int);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -130,6 +131,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         EndPaint(hWnd, &ps);
     } break;
+    case WM_LBUTTONDOWN:
+    {
+        // get mouse position
+        int xPos = GET_X_LPARAM(lParam);
+        int yPos = GET_Y_LPARAM(lParam);
+        // compute number of cell where click event was happend
+        int index = GetCellNumber(hWnd, xPos, yPos);
+       
+        // TEMORARY SOLUTION
+        // draw number of cell
+        HDC hdc = GetDC(hWnd);
+        if (hdc)
+        {
+            WCHAR tempStr[20];
+            wsprintf(tempStr, _T("cell number %d"), index);
+            TextOut(hdc, xPos, yPos, tempStr, lstrlen(tempStr));
+
+            ReleaseDC(hWnd, hdc);
+        }
+
+
+    } break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
@@ -141,6 +164,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+// PURPOSE: define sides of game board
 BOOL GetGameboardRect(HWND hWnd, RECT *pRect)
 {
     // we need to calculate center of client area
@@ -179,3 +203,30 @@ void DrawLine(HDC hdc, int startx, int starty, int endx, int endy, bool isHorizo
     }
 }
 
+int GetCellNumber(HWND hWnd, int xPos, int yPos)
+{
+    POINT pt;
+    pt.x = xPos;
+    pt.y = yPos;
+    RECT rect;
+
+    // get sides of gameboard
+    if (GetGameboardRect(hWnd, &rect))
+    {
+        if (PtInRect(&rect, pt))
+        {
+            // MAGIC CALCULATION:
+            // 1. normalise coordinates if point in gameboard area
+            xPos = pt.x - rect.left;
+            yPos = pt.y - rect.top;
+            // 2. calculate column and row numbers
+            int column = xPos / CELL_SIZE;
+            int row = yPos / CELL_SIZE;
+            // 3. calculate cell number
+            return column + row * 3;
+        }
+    }
+
+    // outside of gameboard area
+    return -1;
+}
