@@ -5,12 +5,19 @@
 #include <tchar.h>
 #include <math.h>
 
+enum player {
+    player_1,
+    player_2
+};
 
 // Global Variables:
  HINSTANCE hInst;                                // current instance
 #define szWindowClass _T("WINCLASS1")            // the main window class name
 #define szTitle _T("Tictactoe Game")
 const int CELL_SIZE = 100;
+HBRUSH hbPlayer1;
+HBRUSH hbPlayer2;
+player playerTurn = player_1;
 
 // Forward declarations of functions included in this code module:
 ATOM                MyRegisterClass(HINSTANCE);
@@ -101,6 +108,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     {
         // mock of window center procedure
         SetWindowPos(hWnd, 0, 100, 100, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
+        
+        // create solid brush for drawing in certain cell
+        hbPlayer1 = CreateSolidBrush(RGB(255, 153, 255));
+        hbPlayer2 = CreateSolidBrush(RGB(102, 255, 178));
+       
     } break;
     case WM_GETMINMAXINFO:
     {
@@ -145,14 +157,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             RECT cellRect;
             GetCellRect(hWnd, index, &cellRect);
-            FillRect(hdc, &cellRect, GetStockBrush(WHITE_BRUSH));
+
+            FillRect(hdc, &cellRect, (playerTurn == player_1) ? hbPlayer1 : hbPlayer2);
 
             ReleaseDC(hWnd, hdc);
         }
-
+        
+        // Rotate order
+        playerTurn = (playerTurn == player_1) ? player_2: player_1;
 
     } break;
     case WM_DESTROY:
+        // release resources
+        DeleteObject(hbPlayer1);
+        DeleteObject(hbPlayer2);
+
         PostQuitMessage(0);
         break;
     default:
