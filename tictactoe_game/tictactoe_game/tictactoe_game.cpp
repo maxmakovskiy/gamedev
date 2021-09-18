@@ -18,7 +18,8 @@ BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL                GetGameboardRect(HWND, RECT*);
 void                DrawLine(HDC, int, int, int, int, bool);
-int                 GetCellNumber(HWND, int, int);
+int                 GetCellIndex(HWND, int, int);
+BOOL                GetCellRect(HWND, int, RECT*);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -137,16 +138,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int xPos = GET_X_LPARAM(lParam);
         int yPos = GET_Y_LPARAM(lParam);
         // compute number of cell where click event was happend
-        int index = GetCellNumber(hWnd, xPos, yPos);
+        int index = GetCellIndex(hWnd, xPos, yPos);
        
-        // TEMORARY SOLUTION
-        // draw number of cell
         HDC hdc = GetDC(hWnd);
         if (hdc)
         {
-            WCHAR tempStr[20];
-            wsprintf(tempStr, _T("cell number %d"), index);
-            TextOut(hdc, xPos, yPos, tempStr, lstrlen(tempStr));
+            RECT cellRect;
+            GetCellRect(hWnd, index, &cellRect);
+            FillRect(hdc, &cellRect, GetStockBrush(BLACK_BRUSH));
 
             ReleaseDC(hWnd, hdc);
         }
@@ -174,7 +173,7 @@ BOOL GetGameboardRect(HWND hWnd, RECT *pRect)
         int width = rc.right - rc.left;
         int height = rc.bottom - rc.top;
 
-        // calculate sides of rectangular gameboard
+        // calculate coordinates of upper-left and lower-right corners of rectangular gameboard
         pRect->left = (width - CELL_SIZE * 3) / 2;
         pRect->top = (height - CELL_SIZE * 3) / 2;
         pRect->right = pRect->left + CELL_SIZE * 3;
@@ -203,8 +202,10 @@ void DrawLine(HDC hdc, int startx, int starty, int endx, int endy, bool isHorizo
     }
 }
 
-int GetCellNumber(HWND hWnd, int xPos, int yPos)
+int GetCellIndex(HWND hWnd, int xPos, int yPos)
 {
+    // index = -1 - cursor is moving outside the board
+    // index = [0;8] - cursor in board area
     POINT pt;
     pt.x = xPos;
     pt.y = yPos;
@@ -229,4 +230,30 @@ int GetCellNumber(HWND hWnd, int xPos, int yPos)
 
     // outside of gameboard area
     return -1;
+}
+
+BOOL GetCellRect(HWND hWnd, int index, RECT* rect)
+{
+    RECT gameboardRect;
+
+    SetRectEmpty(rect);
+
+    if (index == -1)
+        return FALSE;
+    
+    if (GetGameboardRect(hWnd, &gameboardRect))
+    {
+        // convert index to (x,y) coordinates of cell's upper-left corner in range [0;2] - x; [0;2] - y 
+        int x = index % 3; 
+        int y = index / 3;
+        
+        // calculate upper-left corner coordinates using gameboard coordinates and size of one cell
+        rect->left = gameboardRect.left + CELL_SIZE * x;
+        rect->top = gameboardRect.top + CELL_SIZE * y;
+        // calculate lower-right corner coordinates using coordinates of upper-left corner
+        rect->right = rect->left + CELL_SIZE;
+        rect->bottom = rect->top + CELL_SIZE;
+    }
+
+    return TRUE;
 }
