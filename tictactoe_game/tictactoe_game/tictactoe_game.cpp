@@ -4,22 +4,20 @@
 #include <windowsx.h>
 #include <tchar.h>
 #include <math.h>
+#include "game_area.cpp"
 
-enum player {
-    player_1,
-    player_2
-};
 
-// Global Variables:
- HINSTANCE hInst;                                // current instance
+// Global Variables
+HINSTANCE hInst;                                // current instance
 #define szWindowClass _T("WINCLASS1")            // the main window class name
 #define szTitle _T("Tictactoe Game")
 const int CELL_SIZE = 100;
 HBRUSH hbPlayer1;
 HBRUSH hbPlayer2;
-player playerTurn = player_1;
+Player playerTurn = Player::player_1;
+GameArea area;
 
-// Forward declarations of functions included in this code module:
+// Forward declarations of functions included in this code module
 ATOM                MyRegisterClass(HINSTANCE);
 BOOL                InitInstance(HINSTANCE, int);
 LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -139,6 +137,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             // draw vertical lines
             DrawLine(hdc, rect.left + CELL_SIZE, rect.top, rect.left + CELL_SIZE, rect.bottom, FALSE);
             DrawLine(hdc, rect.left + CELL_SIZE * 2, rect.top, rect.left + CELL_SIZE * 2, rect.bottom, FALSE);
+           
+            // fill gameBoard by colors corespond to current situation on the table
+            RECT rectCell;
+            const Player* currentArea = area.GetArea();
+            for (int i = 0; i < 9; i++)
+            {
+                if (*(currentArea + i) != Player::unknown && GetCellRect(hWnd, i, &rectCell))
+                {
+                    FillRect(hdc, &rectCell, (*(currentArea + i) == Player::player_1) ? hbPlayer1 : hbPlayer2);
+                }
+            }
 
         }
 
@@ -157,14 +166,17 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             RECT cellRect;
             GetCellRect(hWnd, index, &cellRect);
-
-            FillRect(hdc, &cellRect, (playerTurn == player_1) ? hbPlayer1 : hbPlayer2);
-
+            
+            FillRect(hdc, &cellRect, (playerTurn == Player::player_1) ? hbPlayer1 : hbPlayer2);
+            
             ReleaseDC(hWnd, hdc);
         }
         
+        // write player turn for save current state of table
+        area.makeStep(playerTurn, index);
+
         // Rotate order
-        playerTurn = (playerTurn == player_1) ? player_2: player_1;
+        playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
     } break;
     case WM_DESTROY:
