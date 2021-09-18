@@ -145,7 +145,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             RECT cellRect;
             GetCellRect(hWnd, index, &cellRect);
-            FillRect(hdc, &cellRect, GetStockBrush(BLACK_BRUSH));
+            FillRect(hdc, &cellRect, GetStockBrush(WHITE_BRUSH));
 
             ReleaseDC(hWnd, hdc);
         }
@@ -248,11 +248,11 @@ BOOL GetCellRect(HWND hWnd, int index, RECT* rect)
         int y = index / 3;
         
         // calculate upper-left corner coordinates using gameboard coordinates and size of one cell
-        rect->left = gameboardRect.left + CELL_SIZE * x;
-        rect->top = gameboardRect.top + CELL_SIZE * y;
+        rect->left = gameboardRect.left + CELL_SIZE * x + 1; // make offset by 1
+        rect->top = gameboardRect.top + CELL_SIZE * y + 1;   // for maintain gameboard's lines
         // calculate lower-right corner coordinates using coordinates of upper-left corner
-        rect->right = rect->left + CELL_SIZE;
-        rect->bottom = rect->top + CELL_SIZE;
+        rect->right = rect->left + CELL_SIZE - 1;
+        rect->bottom = rect->top + CELL_SIZE - 1;
     }
 
     return TRUE;
