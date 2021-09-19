@@ -56,6 +56,7 @@ class GameArea {
         }
     }
 
+    // Board have free steps?
     bool IsFull() const
     {
         for (int i = 0; i < 9; i++)
@@ -95,7 +96,13 @@ public:
             return BoardState::not_end;
     }
 
-    GameArea() {
+    bool IsOccupied(int indexCell) const
+    {
+        return area[indexCell] != Player::unknown;
+    }
+
+    GameArea() 
+    {
         area = new Player[9];
         for (int i = 0; i < 9; i++)
             area[i] = Player::unknown;

@@ -160,6 +160,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         int yPos = GET_Y_LPARAM(lParam);
         // compute number of cell where click event was happend
         int index = GetCellIndex(hWnd, xPos, yPos);
+        
+        // if current cell is occupied
+        if (area.IsOccupied(index))
+            break;
        
         HDC hdc = GetDC(hWnd);
         if (hdc)
@@ -175,14 +179,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // write player turn for save current state of table
         area.makeStep(playerTurn, index);
 
-        // do the check - maybe who's win
+        // do the check - maybe anyone win
         if (area.VictoryCheck() == BoardState::player1_win)
         {
-            MessageBox(hWnd, L"player1 win!", L"STATE OF GAME", MB_OK);
+            MessageBox(hWnd, L"player1 - winner!", L"STATE OF GAME", MB_OK);
         }
         else if (area.VictoryCheck() == BoardState::player2_win)
         {
-            MessageBox(hWnd, L"player2 win!", L"STATE OF GAME", MB_OK);
+            MessageBox(hWnd, L"player2 - winner!", L"STATE OF GAME", MB_OK);
         }
         else if (area.VictoryCheck() == BoardState::draw)
         {
