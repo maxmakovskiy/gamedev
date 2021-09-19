@@ -25,6 +25,7 @@ void                DrawLine(HDC, int, int, int, int, bool);
 int                 GetCellIndex(HWND, int, int);
 BOOL                GetCellRect(HWND, int, RECT*);
 void                DisplayWinnerAsMessageBox(BoardState, HWND);
+void                ShowTurn(HWND, HDC);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -156,6 +157,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
 
         }
 
+        ShowTurn(hWnd, hdc);
+
         EndPaint(hWnd, &ps);
     } break;
     case WM_LBUTTONDOWN:
@@ -169,7 +172,11 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // if current cell is occupied
         if (area.IsOccupied(index))
             break;
-       
+
+        // write player turn for save current state of table
+        area.makeStep(playerTurn, index);
+    
+        // draw specific cell refer to current playerturn
         HDC hdc = GetDC(hWnd);
         if (hdc)
         {
@@ -177,12 +184,15 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             GetCellRect(hWnd, index, &cellRect);
             
             FillRect(hdc, &cellRect, (playerTurn == Player::player_1) ? hbPlayer1 : hbPlayer2);
-            
+
+            // draw text who is turn under gameboard
+            ShowTurn(hWnd, hdc);
+           
             ReleaseDC(hWnd, hdc);
         }
         
-        // write player turn for save current state of table
-        area.makeStep(playerTurn, index);
+        // Rotate order
+        playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
         // do the check - maybe anyone win
         if (area.VictoryCheck() == BoardState::player1_win)
@@ -191,9 +201,6 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             DisplayWinnerAsMessageBox(BoardState::player2_win, hWnd);
         else if (area.VictoryCheck() == BoardState::draw)
             DisplayWinnerAsMessageBox(BoardState::draw, hWnd);
-        
-        // Rotate order
-        playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
     } break;
     case WM_DESTROY:
@@ -317,6 +324,8 @@ void DisplayWinnerAsMessageBox(BoardState state, HWND hWnd)
     else
         temp = L"Draw!\nStart new game?";
 
+    EnableWindow(hWnd, FALSE);
+
     int msgboxID = MessageBox(
         NULL,
         temp,
@@ -327,7 +336,8 @@ void DisplayWinnerAsMessageBox(BoardState state, HWND hWnd)
     if (msgboxID == IDYES)
     { // start new game
         area.Clean();
-        
+        playerTurn = Player::player_1;
+
         // generate WM_PAINT to the right way
         InvalidateRect(hWnd, NULL, FALSE);
         UpdateWindow(hWnd);
@@ -336,4 +346,27 @@ void DisplayWinnerAsMessageBox(BoardState state, HWND hWnd)
     { // exit from game
         PostMessage(hWnd, WM_CLOSE, 0, 0);
     }
+
+    EnableWindow(hWnd, TRUE);
+    SetForegroundWindow(hWnd);
+}
+
+void ShowTurn(HWND hWnd, HDC hdc)
+{
+    const WCHAR* playerStr;
+    // if current player 2 then next step is for player1
+    if (playerTurn == Player::player_2)
+        playerStr = L"Player1 turn";
+    else if ((playerTurn == Player::player_1) && area.IsEmpty())
+        playerStr = L"Player1 turn";
+    else
+        playerStr = L"Player2 turn";
+
+    RECT textRect;
+    if (GetClientRect(hWnd, &textRect))
+    {
+        textRect.top = textRect.bottom - 50;
+        DrawText(hdc, playerStr, lstrlen(playerStr), &textRect, DT_CENTER);
+    }
+
 }

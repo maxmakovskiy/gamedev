@@ -142,6 +142,10 @@
     <ClCompile Include="game_area.cpp" />
     <ClCompile Include="tictactoe_game.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="ttt0.png" />
+    <Image Include="tttx.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

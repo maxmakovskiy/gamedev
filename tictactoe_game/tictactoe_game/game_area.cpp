@@ -109,6 +109,19 @@ public:
         }
     }
 
+    bool IsEmpty() const
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            if (area[i] == Player::player_1 ||
+                area[i] == Player::player_2)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     GameArea() 
     {
         area = new Player[9];
