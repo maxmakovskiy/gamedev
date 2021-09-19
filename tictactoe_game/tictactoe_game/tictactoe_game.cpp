@@ -175,6 +175,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         // write player turn for save current state of table
         area.makeStep(playerTurn, index);
 
+        // do the check - maybe who's win
+        if (area.VictoryCheck() == BoardState::player1_win)
+        {
+            MessageBox(hWnd, L"player1 win!", L"STATE OF GAME", MB_OK);
+        }
+        else if (area.VictoryCheck() == BoardState::player2_win)
+        {
+            MessageBox(hWnd, L"player2 win!", L"STATE OF GAME", MB_OK);
+        }
+        else if (area.VictoryCheck() == BoardState::draw)
+        {
+            MessageBox(hWnd, L"Draw!", L"STATE OF GAME", MB_OK);
+        }
+
+
         // Rotate order
         playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
