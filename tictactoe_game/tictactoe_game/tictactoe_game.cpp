@@ -144,13 +144,16 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             const Player* currentArea = area.GetArea();
             for (int i = 0; i < 9; i++)
             {
-                if (*(currentArea + i) != Player::unknown && GetCellRect(hWnd, i, &rectCell))
+                if (GetCellRect(hWnd, i, &rectCell))
                 {
-                    FillRect(hdc, &rectCell, (*(currentArea + i) == Player::player_1) ? hbPlayer1 : hbPlayer2);
-                }
-                else
-                {
-                    FillRect(hdc, &rectCell, GetStockBrush(WHITE_BRUSH));
+                    if (*(currentArea + i) != Player::unknown)
+                    {
+                        FillRect(hdc, &rectCell, (*(currentArea + i) == Player::player_1) ? hbPlayer1 : hbPlayer2);
+                    }
+                    else
+                    {
+                        FillRect(hdc, &rectCell, GetStockBrush(WHITE_BRUSH));
+                    }
                 }
             }
 
@@ -328,6 +331,7 @@ void DisplayWinnerAsMessageBox(BoardState state, HWND hWnd)
     { // start new game
         area.Clean();
         
+        // generate WM_PAINT to the right way
         InvalidateRect(hWnd, NULL, FALSE);
         UpdateWindow(hWnd);
     }
