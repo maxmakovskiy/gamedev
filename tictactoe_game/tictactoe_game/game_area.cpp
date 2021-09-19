@@ -101,6 +101,14 @@ public:
         return area[indexCell] != Player::unknown;
     }
 
+    void Clean()
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            area[i] = Player::unknown;
+        }
+    }
+
     GameArea() 
     {
         area = new Player[9];

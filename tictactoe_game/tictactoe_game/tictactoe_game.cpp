@@ -25,6 +25,7 @@ BOOL                GetGameboardRect(HWND, RECT*);
 void                DrawLine(HDC, int, int, int, int, bool);
 int                 GetCellIndex(HWND, int, int);
 BOOL                GetCellRect(HWND, int, RECT*);
+void                DisplayWinnerAsMessageBox(BoardState, HWND);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -147,6 +148,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
                 {
                     FillRect(hdc, &rectCell, (*(currentArea + i) == Player::player_1) ? hbPlayer1 : hbPlayer2);
                 }
+                else
+                {
+                    FillRect(hdc, &rectCell, GetStockBrush(WHITE_BRUSH));
+                }
             }
 
         }
@@ -181,19 +186,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 
         // do the check - maybe anyone win
         if (area.VictoryCheck() == BoardState::player1_win)
-        {
-            MessageBox(hWnd, L"player1 - winner!", L"STATE OF GAME", MB_OK);
-        }
+            DisplayWinnerAsMessageBox(BoardState::player1_win, hWnd);
         else if (area.VictoryCheck() == BoardState::player2_win)
-        {
-            MessageBox(hWnd, L"player2 - winner!", L"STATE OF GAME", MB_OK);
-        }
+            DisplayWinnerAsMessageBox(BoardState::player2_win, hWnd);
         else if (area.VictoryCheck() == BoardState::draw)
-        {
-            MessageBox(hWnd, L"Draw!", L"STATE OF GAME", MB_OK);
-        }
-
-
+            DisplayWinnerAsMessageBox(BoardState::draw, hWnd);
+        
         // Rotate order
         playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
@@ -306,4 +304,35 @@ BOOL GetCellRect(HWND hWnd, int index, RECT* rect)
     }
 
     return TRUE;
+}
+
+void DisplayWinnerAsMessageBox(BoardState state, HWND hWnd)
+{
+    const WCHAR* temp;
+
+    if (state == BoardState::player1_win)
+        temp = L"Player1 wins!\nStart new game?";
+    else if (state == BoardState::player2_win)
+        temp = L"Player2 wins!\nStart new game?";
+    else
+        temp = L"Draw!\nStart new game?";
+
+    int msgboxID = MessageBox(
+        NULL,
+        temp,
+        _T("End of the game"),
+        MB_ICONINFORMATION | MB_YESNO
+    );
+
+    if (msgboxID == IDYES)
+    { // start new game
+        area.Clean();
+        
+        InvalidateRect(hWnd, NULL, FALSE);
+        UpdateWindow(hWnd);
+    }
+    else if (msgboxID == IDNO)
+    { // exit from game
+        PostMessage(hWnd, WM_CLOSE, 0, 0);
+    }
 }
