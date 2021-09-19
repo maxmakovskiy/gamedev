@@ -8,8 +8,7 @@
 
 
 // Global Variables
-HINSTANCE hInst;                                // current instance
-#define szWindowClass _T("WINCLASS1")            // the main window class name
+#define szWindowClass _T("WINCLASS1")           // the main window class name
 #define szTitle _T("Tictactoe Game")
 const int CELL_SIZE = 100;
 HBRUSH hbPlayer1;
@@ -18,9 +17,9 @@ Player playerTurn = Player::player_1;
 GameArea area;
 
 // Forward declarations of functions included in this code module
-ATOM                MyRegisterClass(HINSTANCE);
+ATOM                RegisterMainWindowClass(HINSTANCE);
 BOOL                InitInstance(HINSTANCE, int);
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
+LRESULT CALLBACK    MainWndProc(HWND, UINT, WPARAM, LPARAM);
 BOOL                GetGameboardRect(HWND, RECT*);
 void                DrawLine(HDC, int, int, int, int, bool);
 int                 GetCellIndex(HWND, int, int);
@@ -34,15 +33,15 @@ int WINAPI wWinMain(HINSTANCE hInstance,
                    int       nCmdShow)
 {
     // Perform application initialization
-    MyRegisterClass(hInstance);
+    RegisterMainWindowClass(hInstance);
     if (!InitInstance (hInstance, nCmdShow))
     {
         return FALSE;
     }
 
-    MSG msg;
 
     // Main message loop:
+    MSG msg;
     while (GetMessage(&msg, NULL, 0, 0))
     {
         TranslateMessage(&msg);
@@ -53,14 +52,14 @@ int WINAPI wWinMain(HINSTANCE hInstance,
 }
 
 //  PURPOSE: Registers the window class.
-ATOM MyRegisterClass(HINSTANCE hInstance)
+ATOM RegisterMainWindowClass(HINSTANCE hInstance)
 {
     WNDCLASSEXW winclass;
 
     winclass.cbSize = sizeof(WNDCLASSEX);
 
     winclass.style          = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-    winclass.lpfnWndProc    = WndProc;
+    winclass.lpfnWndProc    = MainWndProc;
     winclass.cbClsExtra     = 0;
     winclass.cbWndExtra     = 0;
     winclass.hInstance      = hInstance;
@@ -77,8 +76,6 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 //   PURPOSE: Saves instance handle and creates main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   hInst = hInstance; // Store instance handle in our global variable
-
    HWND hWnd = CreateWindowW(
        szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW|WS_VISIBLE),
        0, 0, 600, 600,
@@ -96,7 +93,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 }
 
 //  PURPOSE: Processes messages for the main window.
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     PAINTSTRUCT ps;
     HDC hdc;
