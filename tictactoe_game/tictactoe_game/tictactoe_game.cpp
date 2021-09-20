@@ -5,6 +5,7 @@
 #include <tchar.h>
 #include <math.h>
 #include "game_area.h"
+#include "resource.h"
 
 
 // Global Variables
@@ -14,6 +15,8 @@ HINSTANCE hInst;
 const int CELL_SIZE = 100;
 HBRUSH hbPlayer1;
 HBRUSH hbPlayer2;
+HICON hXicon;
+HICON hOicon;
 Player playerTurn = Player::player_1;
 GameArea area;
 
@@ -113,6 +116,10 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // create solid brush for drawing in certain cell
         hbPlayer1 = CreateSolidBrush(RGB(255, 153, 255));
         hbPlayer2 = CreateSolidBrush(RGB(102, 255, 178));
+
+        // load images to app
+        hXicon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON_X));
+        hOicon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON_O));
        
     } break;
     case WM_GETMINMAXINFO:
@@ -188,6 +195,10 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             GetCellRect(hWnd, index, &cellRect);
             
             FillRect(hdc, &cellRect, (playerTurn == Player::player_1) ? hbPlayer1 : hbPlayer2);
+            DrawIcon(hdc, 
+                cellRect.left + ((cellRect.right - cellRect.left) / 2), 
+                cellRect.top + ((cellRect.right - cellRect.left) / 2),
+                (playerTurn == Player::player_1) ? hXicon : hOicon);
 
             // draw text who is turn under gameboard
             ShowTurn(hWnd, hdc);
@@ -211,6 +222,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // release resources
         DeleteObject(hbPlayer1);
         DeleteObject(hbPlayer2);
+        DestroyIcon(hXicon);
+        DestroyIcon(hOicon);
 
         PostQuitMessage(0);
         break;

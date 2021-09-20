@@ -36,10 +36,10 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="withoutback_ttt0.png">
+    <Image Include="withoutback_ttt0.ico">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="withoutback_tttx.png">
+    <Image Include="withoutback_tttx.ico">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

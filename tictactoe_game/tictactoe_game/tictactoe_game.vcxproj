@@ -150,8 +150,8 @@
     <ResourceCompile Include="tictactoe_game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="withoutback_ttt0.png" />
-    <Image Include="withoutback_tttx.png" />
+    <Image Include="withoutback_ttt0.ico" />
+    <Image Include="withoutback_tttx.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

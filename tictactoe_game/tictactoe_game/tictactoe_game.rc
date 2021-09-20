@@ -57,12 +57,14 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// PNG
+// Icon
 //
 
-IDB_O                   PNG                     "withoutback_ttt0.png"
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_O              ICON                    "withoutback_ttt0.ico"
 
-IDB_X                   PNG                     "withoutback_tttx.png"
+IDI_ICON_X              ICON                    "withoutback_tttx.ico"
 
 #endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
