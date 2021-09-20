@@ -65,5 +65,7 @@ public:
     
     GameArea();
 
+    GameArea(const GameArea& obj);
+
     ~GameArea();
 };

@@ -91,6 +91,16 @@ GameArea::GameArea()
         area[i] = Player::unknown;
 }
 
+GameArea::GameArea(const GameArea& source)
+{
+    this->area = new Player[9];
+
+    for (int i = 0; i < 9; i++)
+    {
+        this->area[i] = source.area[i];
+    }
+}
+
 GameArea::~GameArea()
 {
     delete[] area;
