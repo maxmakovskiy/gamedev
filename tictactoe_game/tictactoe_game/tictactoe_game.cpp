@@ -30,6 +30,7 @@ int                 GetCellIndex(HWND, int, int);
 BOOL                GetCellRect(HWND, int, RECT*);
 void                DisplayWinnerAsMessageBox(BoardState, HWND);
 void                ShowTurn(HWND, HDC);
+void                DrawCenteredIcon(HDC, RECT*, Player);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -158,6 +159,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
                     if (*(currentArea + i) != Player::unknown)
                     {
                         FillRect(hdc, &rectCell, (*(currentArea + i) == Player::player_1) ? hbPlayer1 : hbPlayer2);
+                        DrawCenteredIcon(hdc, &rectCell, *(currentArea+i));
                     }
                     else
                     {
@@ -187,7 +189,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // write player turn for save current state of table
         area.makeStep(playerTurn, index);
     
-        // draw specific cell refer to current playerturn
+        // draw specific cell's area refer to current playerturn
         HDC hdc = GetDC(hWnd);
         if (hdc)
         {
@@ -195,10 +197,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
             GetCellRect(hWnd, index, &cellRect);
             
             FillRect(hdc, &cellRect, (playerTurn == Player::player_1) ? hbPlayer1 : hbPlayer2);
-            DrawIcon(hdc, 
-                cellRect.left + ((cellRect.right - cellRect.left) / 2), 
-                cellRect.top + ((cellRect.right - cellRect.left) / 2),
-                (playerTurn == Player::player_1) ? hXicon : hOicon);
+            DrawCenteredIcon(hdc, &cellRect, playerTurn);
 
             // draw text who is turn under gameboard
             ShowTurn(hWnd, hdc);
@@ -387,3 +386,20 @@ void ShowTurn(HWND hWnd, HDC hdc)
     }
 
 }
+
+void DrawCenteredIcon(HDC hdc, RECT *cellRect, Player owner)
+{
+    // i dont know why 32px is actually size of icon
+    // that has in resources 80x80px size
+    const int iconWidth = 32;
+    const int iconHeight = 32;
+
+    // (x, y) is coordinates of left-upper corner
+    int x = cellRect->left + ((cellRect->right - cellRect->left) - iconWidth) / 2;
+    int y = cellRect->top + ((cellRect->bottom - cellRect->top) - iconHeight) / 2;
+
+
+    DrawIcon(hdc, x, y,
+        (owner == Player::player_1) ? hXicon : hOicon);
+}
+
