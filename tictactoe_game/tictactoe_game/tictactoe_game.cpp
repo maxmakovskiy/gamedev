@@ -17,6 +17,8 @@ HBRUSH hbPlayer1;
 HBRUSH hbPlayer2;
 HICON hXicon;
 HICON hOicon;
+HPEN hWinnerLinePen;
+HPEN hDefaultLinePen;
 Player playerTurn = Player::player_1;
 GameArea area;
 
@@ -31,6 +33,7 @@ BOOL                GetCellRect(HWND, int, RECT*);
 void                DisplayWinnerAsMessageBox(BoardState, HWND);
 void                ShowTurn(HWND, HDC);
 void                DrawCenteredIcon(HDC, RECT*, Player);
+void                DrawWinnerLineComb(HWND, HDC, BoardState, const int*);
 
 // ENTRY POINT
 int WINAPI wWinMain(HINSTANCE hInstance,
@@ -121,7 +124,12 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // load images to app
         hXicon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON_X));
         hOicon = LoadIcon(hInst, MAKEINTRESOURCE(IDI_ICON_O));
-       
+    
+        const int widthOfWinnerPen = 10;
+        const int widthOfDefaultPen = 1;
+        hWinnerLinePen = CreatePen(PS_SOLID, widthOfWinnerPen, RGB(255, 0, 0));
+        hDefaultLinePen = CreatePen(PS_SOLID, widthOfWinnerPen, RGB(0, 0, 0));
+
     } break;
     case WM_GETMINMAXINFO:
     {
@@ -208,19 +216,31 @@ LRESULT CALLBACK MainWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPar
         // Rotate order
         playerTurn = (playerTurn == Player::player_1) ? Player::player_2: Player::player_1;
 
+        const int* indexesOfWinnerComb;
+        BoardState winner;
+        indexesOfWinnerComb = area.VictoryCheck(winner);
         // do the check - maybe anyone win
-        if (area.VictoryCheck() == BoardState::player1_win)
+        if (winner == BoardState::player1_win)
+        {
+            DrawWinnerLineComb(hWnd, hdc, BoardState::player1_win, indexesOfWinnerComb);
             DisplayWinnerAsMessageBox(BoardState::player1_win, hWnd);
-        else if (area.VictoryCheck() == BoardState::player2_win)
+        }
+        else if (winner == BoardState::player2_win)
+        {
+            DrawWinnerLineComb(hWnd, hdc, BoardState::player2_win, indexesOfWinnerComb);
             DisplayWinnerAsMessageBox(BoardState::player2_win, hWnd);
-        else if (area.VictoryCheck() == BoardState::draw)
+        }
+        else if (winner == BoardState::draw)
+        {
             DisplayWinnerAsMessageBox(BoardState::draw, hWnd);
+        }
 
     } break;
     case WM_DESTROY:
         // release resources
         DeleteObject(hbPlayer1);
         DeleteObject(hbPlayer2);
+        DeleteObject(hWinnerLinePen);
         DestroyIcon(hXicon);
         DestroyIcon(hOicon);
 
@@ -260,6 +280,8 @@ void DrawLine(HDC hdc, int startx, int starty, int endx, int endy, bool isHorizo
 {
     const double SIZE_OF_PADDING = 0.03; // 3%
     double padding = sqrt(pow((double)endx-startx, 2) + pow((double)endy-starty, 2)) * SIZE_OF_PADDING;
+
+    SelectObject(hdc, hDefaultLinePen);
 
     if (isHorizontal)
     {
@@ -403,3 +425,22 @@ void DrawCenteredIcon(HDC hdc, RECT *cellRect, Player owner)
         (owner == Player::player_1) ? hXicon : hOicon);
 }
 
+void DrawWinnerLineComb(HWND hWnd, HDC hdc, BoardState state, const int *indexesOfWinnerComb)
+{
+    RECT startCellRect, endCellRect;
+    int startx, starty, endx, endy;
+
+    if (GetCellRect(hWnd, indexesOfWinnerComb[0], &startCellRect) &&
+        GetCellRect(hWnd, indexesOfWinnerComb[2], &endCellRect))
+    {
+        startx = ((startCellRect.right - startCellRect.left) / 2) + startCellRect.left;
+        starty = ((startCellRect.bottom - startCellRect.top) / 2) + startCellRect.top;
+        endx = ((endCellRect.right - endCellRect.left) / 2) + endCellRect.left;
+        endy =  ((endCellRect.bottom - endCellRect.top) / 2) + endCellRect.top;
+        
+        SelectObject(hdc, hWinnerLinePen);
+        MoveToEx(hdc, startx, starty, NULL);
+        LineTo(hdc, endx, endy);
+    }
+
+}

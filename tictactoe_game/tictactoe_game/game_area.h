@@ -34,7 +34,7 @@ class GameArea {
     bool Check(const int winRow[3]) const;
 
     // returns Winner by given strategy
-    void GetWinner(Player* winner) const;
+    const int* GetWinner(Player* winner);
 
     // Board have free steps?
     bool IsFull() const;
@@ -52,7 +52,7 @@ public:
 
     // Calls after every user step
     // and check who is win or gameboard is full and occurs draw situation
-    BoardState VictoryCheck();
+    const int* VictoryCheck(BoardState& state);
 
     bool IsOccupied(int indexCell) const
     {

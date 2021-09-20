@@ -13,15 +13,20 @@ bool GameArea::Check(const int winRow[3]) const
 }
 
 // returns Winner by given strategy
-void GameArea::GetWinner(Player* winner) const
+const int* GameArea::GetWinner(Player* winner)
 {
     for (int i = 0; i < 8; i++)
     {
         if (Check(strategy[i]) && (area[strategy[i][0]] == Player::player_1))
+        {
             *winner = Player::player_1;
+            return strategy[i];
+        }
         else if (Check(strategy[i]) && (area[strategy[i][0]] == Player::player_2))
+        {
             *winner = Player::player_2;
-
+            return strategy[i];
+        }
     }
 }
 
@@ -39,19 +44,22 @@ bool GameArea::IsFull() const
    
 // Calls after every user step
 // and check who is win or gameboard is full and occurs draw situation
-BoardState GameArea::VictoryCheck()
+const int* GameArea::VictoryCheck(BoardState &state)
 { 
+    const int* winnerComb;
     Player temp;
-    GetWinner(&temp);
+    winnerComb = GetWinner(&temp);
     if (temp == Player::player_1)
-        return BoardState::player1_win;
+        state = BoardState::player1_win;
     else if (temp == Player::player_2)
-        return BoardState::player2_win;
+        state = BoardState::player2_win;
     // if AREA is FULL
     else if (IsFull())
-        return BoardState::draw;
+        state = BoardState::draw;
     else
-        return BoardState::not_end;
+        state = BoardState::not_end;
+
+    return winnerComb;
 }
 
 void GameArea::Clean()
