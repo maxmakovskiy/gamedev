@@ -4,7 +4,7 @@
 #include <windowsx.h>
 #include <tchar.h>
 #include <math.h>
-#include "game_area.cpp"
+#include "game_area.h"
 
 
 // Global Variables

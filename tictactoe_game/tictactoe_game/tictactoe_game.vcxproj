@@ -140,11 +140,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game_area.cpp" />
+    <ClCompile Include="game_area.h" />
     <ClCompile Include="tictactoe_game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ttt0.png" />
-    <Image Include="tttx.png" />
+    <Image Include="withoutback_ttt0.png" />
+    <Image Include="withoutback_tttx.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

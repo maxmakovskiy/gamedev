@@ -21,12 +21,15 @@
     <ClCompile Include="game_area.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="game_area.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="ttt0.png">
+    <Image Include="withoutback_ttt0.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="tttx.png">
+    <Image Include="withoutback_tttx.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
