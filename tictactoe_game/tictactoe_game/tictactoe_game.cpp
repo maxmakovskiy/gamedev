@@ -8,6 +8,7 @@
 
 
 // Global Variables
+HINSTANCE hInst;
 #define szWindowClass _T("WINCLASS1")           // the main window class name
 #define szTitle _T("Tictactoe Game")
 const int CELL_SIZE = 100;
@@ -77,20 +78,23 @@ ATOM RegisterMainWindowClass(HINSTANCE hInstance)
 //   PURPOSE: Saves instance handle and creates main window
 BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 {
-   HWND hWnd = CreateWindowW(
-       szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW|WS_VISIBLE),
-       0, 0, 600, 600,
-       NULL, NULL, hInstance, NULL);
+    // save global app context
+    hInst = hInstance;
 
-   if (!hWnd)
-   {
-      return FALSE;
-   }
+    HWND hWnd = CreateWindowW(
+        szWindowClass, szTitle, (WS_OVERLAPPEDWINDOW|WS_VISIBLE),
+        0, 0, 600, 600,
+        NULL, NULL, hInstance, NULL);
 
-   ShowWindow(hWnd, nCmdShow);
-   UpdateWindow(hWnd);
+    if (!hWnd)
+    {
+        return FALSE;
+    }
 
-   return TRUE;
+    ShowWindow(hWnd, nCmdShow);
+    UpdateWindow(hWnd);
+
+    return TRUE;
 }
 
 //  PURPOSE: Processes messages for the main window.

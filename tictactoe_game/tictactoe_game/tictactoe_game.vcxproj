@@ -144,6 +144,12 @@
     <ClCompile Include="tictactoe_game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="tictactoe_game.rc" />
+  </ItemGroup>
+  <ItemGroup>
     <Image Include="withoutback_ttt0.png" />
     <Image Include="withoutback_tttx.png" />
   </ItemGroup>
