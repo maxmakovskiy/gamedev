@@ -149,6 +149,11 @@
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="src\ballCyan.png" />
+    <Image Include="src\ballOrange.png" />
+    <Image Include="src\ballYellow.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
