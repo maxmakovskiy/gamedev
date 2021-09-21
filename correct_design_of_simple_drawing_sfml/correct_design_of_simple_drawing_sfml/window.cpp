@@ -55,12 +55,12 @@ void Window::Draw(sf::Drawable& drawable)
 	this->window.draw(drawable);
 }
 
-inline bool Window::IsDone()
+bool Window::IsDone()
 {
 	return this->_isDone;
 }
 
-inline bool Window::IsFullscreen()
+bool Window::IsFullscreen()
 {
 	return this->_isFullscreen;
 }

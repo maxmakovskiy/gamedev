@@ -31,8 +31,8 @@ public:
 
 	// methods for retrieving infomation about window
 	// without giving too match control to outside of this class
-	inline bool IsDone();
-	inline bool IsFullscreen();
+	bool IsDone();
+	bool IsFullscreen();
 	sf::Vector2u GetWindowSize();
 
 private:
