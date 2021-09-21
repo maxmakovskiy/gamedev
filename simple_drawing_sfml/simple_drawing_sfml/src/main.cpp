@@ -12,7 +12,9 @@ int main()
 	sf::Sprite spriteCyanBall;
 
 	sf::Vector2u sizeCyanBall;
-	sf::Vector2f increment(0.4f, 0.4f);
+
+	// representing speed by step of move that ball does at one loop iteration
+	sf::Vector2f speed(0.08f, 0.08f);
 
 	const char* pathToCyanBallImage = "F:\\gamedev\\simple_drawing_sfml\\simple_drawing_sfml\\src\\ballCyan.png";
 	if (!textureCyanBall.loadFromFile(pathToCyanBallImage))
@@ -26,6 +28,7 @@ int main()
 	sizeCyanBall.x = textureCyanBall.getSize().x;
 	sizeCyanBall.y = textureCyanBall.getSize().y;
 	
+	// set start coordinates of spriteCyanBall
 	spriteCyanBall.setOrigin(sizeCyanBall.x / 2, sizeCyanBall.y / 2);
 
 	while (window.isOpen())
@@ -40,8 +43,9 @@ int main()
 			
 		}
 	
-		CalculateNewDirection(window, spriteCyanBall, sizeCyanBall, increment);
-		spriteCyanBall.setPosition(spriteCyanBall.getPosition() + increment);
+		CalculateNewDirection(window, spriteCyanBall, sizeCyanBall, speed);
+		
+		spriteCyanBall.setPosition(spriteCyanBall.getPosition() + speed);
 
 		window.clear(sf::Color::Black);
 		window.draw(spriteCyanBall);
