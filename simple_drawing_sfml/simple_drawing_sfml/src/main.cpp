@@ -9,12 +9,19 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(720, 480), "Bouncing ball");
 
 	sf::Texture textureCyanBall;
-	sf::Sprite spriteCyanBall;
+	sf::Texture textureOrangeBall;
+	sf::Texture textureYellowBall;
 
-	sf::Vector2u sizeCyanBall;
+	sf::Sprite spriteCyanBall;
+	sf::Sprite spriteOrangeBall;
+	sf::Sprite spriteYellowBall;
+
+	sf::Vector2u sizeOfOneBall;
 
 	// representing speed by step of move that ball does at one loop iteration
-	sf::Vector2f speed(0.08f, 0.08f);
+	sf::Vector2f speedOfCyanBall(0.08f, 0.08f);
+	sf::Vector2f speedOfOrangeBall(0.08f, 0.08f);
+	sf::Vector2f speedOfYellowBall(0.08f, 0.08f);
 
 	const char* pathToCyanBallImage = "F:\\gamedev\\simple_drawing_sfml\\simple_drawing_sfml\\src\\ballCyan.png";
 	if (!textureCyanBall.loadFromFile(pathToCyanBallImage))
@@ -22,14 +29,35 @@ int main()
 		fprintf(stderr, "Error with load the image from path: %s", pathToCyanBallImage);
 	}
 
+	const char* pathToOrangeBallImage = "F:\\gamedev\\simple_drawing_sfml\\simple_drawing_sfml\\src\\ballOrange.png";
+	if (!textureOrangeBall.loadFromFile(pathToOrangeBallImage))
+	{
+		fprintf(stderr, "Error with load the image from path: %s", pathToOrangeBallImage);
+	}
+
+	const char* pathToYellowBallImage = "F:\\gamedev\\simple_drawing_sfml\\simple_drawing_sfml\\src\\ballYellow.png";
+	if (!textureYellowBall.loadFromFile(pathToYellowBallImage))
+	{
+		fprintf(stderr, "Error with load the image from path: %s", pathToYellowBallImage);
+	}
+
 	spriteCyanBall.setTexture(textureCyanBall);
+	spriteOrangeBall.setTexture(textureOrangeBall);
+	spriteYellowBall.setTexture(textureYellowBall);
 
 	// get size of cyan ball sprite
-	sizeCyanBall.x = textureCyanBall.getSize().x;
-	sizeCyanBall.y = textureCyanBall.getSize().y;
+	sizeOfOneBall.x = textureCyanBall.getSize().x;
+	sizeOfOneBall.y = textureCyanBall.getSize().y;
 	
-	// set start coordinates of spriteCyanBall
-	spriteCyanBall.setOrigin(sizeCyanBall.x / 2, sizeCyanBall.y / 2);
+	// set start coordinates of sprites
+	spriteCyanBall.setOrigin(sizeOfOneBall.x / 2, sizeOfOneBall.y / 2);
+	spriteOrangeBall.setOrigin(sizeOfOneBall.x / 2, sizeOfOneBall.y / 2);
+	spriteYellowBall.setOrigin(sizeOfOneBall.x / 2, sizeOfOneBall.y / 2);
+
+	// set Start position of sprites
+	//spriteCyanBall.setPosition(sizeOfOneBall.x / 2, sizeOfOneBall.y / 2);
+	spriteOrangeBall.setPosition(sizeOfOneBall.x * 2, sizeOfOneBall.y * 1.2f);
+	spriteYellowBall.setPosition(sizeOfOneBall.x * 3.5f, sizeOfOneBall.y * 0.5f);
 
 	while (window.isOpen())
 	{
@@ -43,12 +71,20 @@ int main()
 			
 		}
 	
-		CalculateNewDirection(window, spriteCyanBall, sizeCyanBall, speed);
-		
-		spriteCyanBall.setPosition(spriteCyanBall.getPosition() + speed);
+		CalculateNewDirection(window, spriteCyanBall, sizeOfOneBall, speedOfCyanBall);
+		CalculateNewDirection(window, spriteOrangeBall, sizeOfOneBall, speedOfOrangeBall);
+		CalculateNewDirection(window, spriteYellowBall, sizeOfOneBall, speedOfYellowBall);
+
+		spriteCyanBall.setPosition(spriteCyanBall.getPosition() + speedOfCyanBall);
+		spriteOrangeBall.setPosition(spriteOrangeBall.getPosition() + speedOfOrangeBall);
+		spriteYellowBall.setPosition(spriteYellowBall.getPosition() + speedOfYellowBall);
 
 		window.clear(sf::Color::Black);
+
 		window.draw(spriteCyanBall);
+		window.draw(spriteOrangeBall);
+		window.draw(spriteYellowBall);
+
 		window.display();
 	}
 
