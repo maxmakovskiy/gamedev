@@ -14,7 +14,8 @@ public:
 	void Render();
 
 	Window* GetWindow();
-
+	sf::Time GetElaped();
+	void RestartClock();
 private:
 	void MoveSprite();
 
@@ -22,4 +23,7 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::Vector2f speed;
+
+	sf::Clock clock;
+	sf::Time elapsed;
 };

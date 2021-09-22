@@ -10,9 +10,10 @@ Game::Game()
 	}
 	
 	this->sprite.setTexture(this->texture);
-	this->speed = sf::Vector2f(0.04f, 0.04f);
+	this->speed = sf::Vector2f(200.0f, 200.0f);
 
 	this->sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+
 }
 
 Game::~Game() {}
@@ -56,10 +57,24 @@ void Game::MoveSprite()
 		this->speed.y = -this->speed.y;
 	}
 
+	// get time since clock was last time (re-)started
+	float timeElapsed = this->elapsed.asSeconds();
 	this->sprite.setPosition(
-		this->sprite.getPosition().x + this->speed.x,
-		this->sprite.getPosition().y + this->speed.y
+		// determine distance for ball move over one iteration
+		// distance = speed(hardcoded) * time(that system consumes to make one iteration through the main game loop)
+		this->sprite.getPosition().x + (this->speed.x * timeElapsed),
+		this->sprite.getPosition().y + (this->speed.y * timeElapsed)
 	);
 
+}
+
+sf::Time Game::GetElaped()
+{
+	return this->elapsed;
+}
+
+void Game::RestartClock()
+{
+	this->elapsed = this->clock.restart();
 }
 

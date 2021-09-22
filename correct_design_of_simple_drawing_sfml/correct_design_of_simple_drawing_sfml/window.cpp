@@ -77,6 +77,9 @@ void Window::Setup(const char* title, const sf::Vector2u& size)
 	this->_isFullscreen = false;
 	this->_isDone = false;
 	this->Create();
+
+	// set max FPS number
+	this->window.setFramerateLimit(60);
 }
 
 void Window::Destroy()
