@@ -2,9 +2,6 @@
 
 #include <SFML/Graphics.hpp>
 
-// shortcut jush like define but more safe
-using SnakeContainer = std::vector<SnakeSegment>;
-
 struct SnakeSegment
 {
 	// position of the segment on the grid
@@ -12,6 +9,9 @@ struct SnakeSegment
 
 	SnakeSegment(int x, int y) : position(x, y) {}
 };
+
+// shortcut jush like define but more safe
+using SnakeContainer = std::vector<SnakeSegment>;
 
 enum class Direction
 {
@@ -26,22 +26,24 @@ class Snake
 {
 public:
 	Snake(int blockSize);
-	~Snake();
+	~Snake() {}
 
 	// helper methods
 	// Setters:
-	void IncreaseScore();
-	void SetDirection(Direction obj);
+	inline void IncreaseScore() { this->playerScore += 10; }
+	inline void SetDirection(Direction _direction) { this->currentDirection = _direction; }
 	// Getters:
-	Direction GetDirection() const;
-	int GetSpeed() const;
-	sf::Vector2i GetPosition() const;
-	int GetLives() const;
-	int GetScore() const;
-	bool IsLost() const;
+	inline Direction GetDirection() const { return this->currentDirection; }
+	inline int GetSpeed() const { return this->snakeSpeed; }
+	sf::Vector2i GetPositionOfSnakeHead() const 
+		{ return (this->snakeBody.empty() ? sf::Vector2i(1, 1) : this->snakeBody.front().position);	}
+	inline int GetLives() const { return this->playerLives; }
+	inline int GetScore() const { return this->playerScore; }
+	inline bool IsLost() const { return this->lost; }
 	
-	void Lose(); // lose control is happening here
-	void ToggleLost();
+	// lose control is happening here
+	inline void Lose() { this->lost = true; }
+	void ToggleLost() { this->lost = !this->lost; }
 
 	void Extend(); // grow the snake
 	void Reset();  // put snake on starting position
@@ -56,7 +58,7 @@ private:
 	SnakeContainer snakeBody;	// vector of snake's segments that represents whole snake body
 	Direction currentDirection; // current direction of snake moving
 	int snakeSpeed;				// current snake speed
-	int snakeLives;				// current snake lives
+	int playerLives;				// current snake lives
 	int playerScore;			// current player score
 	bool lost;					// current state of losing 
 	int oneRectSize;			// size of one graphic rectangle that represents one Snake Segment
