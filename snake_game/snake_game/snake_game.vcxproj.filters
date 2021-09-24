@@ -24,12 +24,18 @@
     <ClCompile Include="src\snake.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Snake.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

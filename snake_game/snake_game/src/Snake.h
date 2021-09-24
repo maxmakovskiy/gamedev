@@ -30,7 +30,7 @@ public:
 
 	// helper methods
 	// Setters:
-	inline void IncreaseScore() { this->playerScore += 10; }
+	inline void IncreaseScore() { this->playerScore++; }
 	inline void SetDirection(Direction _direction) { this->currentDirection = _direction; }
 	// Getters:
 	inline Direction GetDirection() const { return this->currentDirection; }
