@@ -36,11 +36,11 @@ void Game::Update()
 	
 	float timeStep = 1.0f / this->snake.GetSpeed();
 
-	if (elapsedTime >= timeStep)
+	if (this->elapsedTime.asSeconds() >= timeStep)
 	{
 		this->snake.Tick();
 		this->world.Update(this->snake);
-		this->elapsedTime -= timeStep;
+		this->elapsedTime -= sf::seconds(timeStep);
 
 		if (this->snake.IsLost())
 		{
@@ -61,5 +61,5 @@ void Game::Render()
 
 void Game::RestartClock()
 {
-	this->elapsedTime = this->clock.getElapsedTime().asSeconds();
+	this->elapsedTime += this->clock.restart();
 }

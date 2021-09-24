@@ -18,13 +18,13 @@ public:
 	void Render();
 
 	Window* GetWindow() { return &this->window; }
-	float GetElapsedTime() const { this->elapsedTime; }
+	sf::Time GetElapsedTime() const { this->elapsedTime; }
 
 	void RestartClock();
 private:
 	Window window;
 
 	sf::Clock clock;
-	float elapsedTime;
+	sf::Time elapsedTime;
 
 };
