@@ -1,25 +1,16 @@
-#include <SFML/Graphics.hpp>
+#include "game.h" 
 
 int main() 
 {
-	sf::RenderWindow window(sf::VideoMode(720, 480), "Application SFML");
-	
-	while (window.isOpen())
+	Game game;
+
+	while (!game.GetWindow()->IsDone())
 	{
-		sf::Event event;
-		while (window.pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed)
-			{
-				window.close();
-			}
-			
-		}
-
-		window.clear(sf::Color::Black);
-		window.display();
+		game.HandleInput();
+		game.Update();
+		game.Render();
+		game.RestartClock();
 	}
-
 
 	return 0;
 }

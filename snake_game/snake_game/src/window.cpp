@@ -17,6 +17,9 @@ void Window::Setup(const char* title, const sf::Vector2u& size)
 	this->done = false;
 	this->fullscreen = false;
 	this->Create();
+
+	// TEMPORARY
+	this->window.setFramerateLimit(10);
 }
 
 void Window::Create()

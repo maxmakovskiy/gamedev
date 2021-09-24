@@ -68,11 +68,11 @@ void World::Update(Snake& player)
 	// and check if player's snake was hit in the walls
 	int gridSizeX = this->windowSize.x / this->blockSize;
 	int gridSizeY = this->windowSize.y / this->blockSize;
-
+		
 	if (player.GetPositionOfSnakeHead().x <= 0 ||
 		player.GetPositionOfSnakeHead().y <= 0 ||
-		player.GetPositionOfSnakeHead().x <= (gridSizeX - 1) ||
-		player.GetPositionOfSnakeHead().y <= (gridSizeX - 1))
+		player.GetPositionOfSnakeHead().x >= (gridSizeX - 1) ||
+		player.GetPositionOfSnakeHead().y >= (gridSizeY - 1))
 	{ // call Lose method for illustrate collision with wall
 		player.Lose();
 	}

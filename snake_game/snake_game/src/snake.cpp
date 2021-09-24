@@ -31,35 +31,35 @@ void Snake::Extend()
 {
 	if (this->snakeBody.empty()) return;
 
-	SnakeSegment& head = this->snakeBody[this->snakeBody.size() - 1];
+	SnakeSegment& tailHead = this->snakeBody[this->snakeBody.size() - 1];
 	if (this->snakeBody.size() > 1)
 	{
-		SnakeSegment& bone = this->snakeBody[this->snakeBody.size() - 2];
-		if (head.position.x = bone.position.x)
+		SnakeSegment& tailBone = this->snakeBody[this->snakeBody.size() - 2];
+		if (tailHead.position.x == tailBone.position.x)
 		{
-			if (head.position.y > bone.position.y)
-				this->snakeBody.push_back(SnakeSegment(head.position.x, head.position.y + 1));
+			if (tailHead.position.y > tailBone.position.y)
+				this->snakeBody.push_back(SnakeSegment(tailHead.position.x, tailHead.position.y + 1));
 			else 
-				this->snakeBody.push_back(SnakeSegment(head.position.x, head.position.y - 1));
+				this->snakeBody.push_back(SnakeSegment(tailHead.position.x, tailHead.position.y - 1));
 		}
-		else if (head.position.y = bone.position.y)
+		else if (tailHead.position.y == tailBone.position.y)
 		{
-			if (head.position.x > bone.position.x)
-				this->snakeBody.push_back(SnakeSegment(head.position.x + 1, head.position.y));
+			if (tailHead.position.x > tailBone.position.x)
+				this->snakeBody.push_back(SnakeSegment(tailHead.position.x + 1, tailHead.position.y));
 			else
-				this->snakeBody.push_back(SnakeSegment(head.position.x - 1, head.position.y));
+				this->snakeBody.push_back(SnakeSegment(tailHead.position.x - 1, tailHead.position.y));
 		}
 	}
 	else // snake size equals to 1
 	{
 		if (this->currentDirection == Direction::Up)
-			this->snakeBody.push_back(SnakeSegment(head.position.x, head.position.y + 1));
+			this->snakeBody.push_back(SnakeSegment(tailHead.position.x, tailHead.position.y + 1));
 		else if (this->currentDirection == Direction::Down)
-			this->snakeBody.push_back(SnakeSegment(head.position.x, head.position.y - 1));
+			this->snakeBody.push_back(SnakeSegment(tailHead.position.x, tailHead.position.y - 1));
 		else if (this->currentDirection == Direction::Left)
-			this->snakeBody.push_back(SnakeSegment(head.position.x - 1, head.position.y));
+			this->snakeBody.push_back(SnakeSegment(tailHead.position.x - 1, tailHead.position.y));
 		else if (this->currentDirection == Direction::Right)
-			this->snakeBody.push_back(SnakeSegment(head.position.x + 1, head.position.y));
+			this->snakeBody.push_back(SnakeSegment(tailHead.position.x + 1, tailHead.position.y));
 	}
 
 }
@@ -77,15 +77,15 @@ void Snake::Tick()
 
 void Snake::Move()
 {
-	for (int i = this->snakeBody.size(); i > 0; i--)
+	for (int i = this->snakeBody.size() - 1; i > 0; i--)
 	{
 		this->snakeBody[i].position = this->snakeBody[i - 1].position;
 	}
 
 	if (this->currentDirection == Direction::Up)
-		this->snakeBody[0].position.y++;
-	else if (this->currentDirection == Direction::Down)
 		this->snakeBody[0].position.y--;
+	else if (this->currentDirection == Direction::Down)
+		this->snakeBody[0].position.y++;
 	else if (this->currentDirection == Direction::Right)
 		this->snakeBody[0].position.x++;
 	else if (this->currentDirection == Direction::Left)
@@ -99,7 +99,7 @@ void Snake::CheckCollision()
 	
 	SnakeSegment& head = this->snakeBody.front();
 
-	for (SnakeContainer::iterator itr = this->snakeBody.begin();
+	for (SnakeContainer::iterator itr = this->snakeBody.begin() + 1;
 		itr != this->snakeBody.end(); itr++)
 	{
 		// if snake's head was touched to certain body segment which determines by current position of iterator
@@ -150,6 +150,8 @@ void Snake::Render(sf::RenderWindow& window)
 			itr->position.x * this->oneRectSize,	
 			itr->position.y * this->oneRectSize
 		);
+
+		window.draw(this->bodyRect);
 
 	}
 

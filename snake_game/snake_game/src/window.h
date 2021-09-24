@@ -20,6 +20,7 @@ public:
 	bool IsDone() { return this->done; }
 	bool IsFullscreen() { return this->fullscreen; }
 	sf::Vector2u GetSize() { this->size; }
+	sf::RenderWindow* GetRenderWindow() { return &(this->window); }
 
 private:
 	sf::RenderWindow window;
