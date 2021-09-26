@@ -5,28 +5,26 @@ Game::Game()
 	, snake(this->world.GetBlockSize())
 	, world(sf::Vector2u(800, 600)) 
 { 
-	textbox.Setup(5, 14, 350, sf::Vector2f(225, 0));
 }
 
 void Game::HandleInput()
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)
+	if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Up) || sf::Keyboard::isKeyPressed(sf::Keyboard::K))
 		&& (this->snake.GetDirection() != Direction::Down))
 	{
 		this->snake.SetDirection(Direction::Up);
-		this->textbox.Add("DIRECTION UP");
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Down) || sf::Keyboard::isKeyPressed(sf::Keyboard::J))
 		&& (this->snake.GetDirection() != Direction::Up))
 	{
 		this->snake.SetDirection(Direction::Down);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || sf::Keyboard::isKeyPressed(sf::Keyboard::L))
 		&& (this->snake.GetDirection() != Direction::Left))
 	{
 		this->snake.SetDirection(Direction::Right);
 	}
-	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
+	else if ((sf::Keyboard::isKeyPressed(sf::Keyboard::Left) || sf::Keyboard::isKeyPressed(sf::Keyboard::H))
 		&& (this->snake.GetDirection() != Direction::Right))
 	{
 		this->snake.SetDirection(Direction::Left);
@@ -37,6 +35,8 @@ void Game::HandleInput()
 void Game::Update()
 {
 	this->window.Update();
+	textbox.Add("player's lives: " + std::to_string(snake.GetLives()));
+	textbox.Add("player's score: " + std::to_string(snake.GetScore()));
 
 	// fixed time step
 	// determine amount of time for one frame
@@ -50,6 +50,8 @@ void Game::Update()
 
 		if (this->snake.IsLost())
 		{
+			//textbox.Clear();
+			//textbox.Add("GAME OVER!\nYour score" + std::to_string(snake.GetScore()));
 			this->snake.Reset();
 		}
 

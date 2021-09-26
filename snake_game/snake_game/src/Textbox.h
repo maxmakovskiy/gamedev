@@ -3,7 +3,7 @@
 #include <string>
 #include <SFML/Graphics.hpp>
 
-using MessageContainer = std::vector<const char*>;
+using MessageContainer = std::vector<std::string>;
 
 class Textbox
 {
@@ -13,7 +13,7 @@ public:
 	~Textbox();
 
 	void Setup(int visible, int charSize, int width, sf::Vector2f screenPos);
-	void Add(const char* message);
+	void Add(std::string message);
 	void Clear();
 
 	void Render(sf::RenderWindow& window);

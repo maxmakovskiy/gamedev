@@ -157,4 +157,19 @@ void Snake::Render(sf::RenderWindow& window)
 
 }
 
-
+void Snake::RespawnToStart()
+{
+	this->SetDirection(Direction::None);
+	
+	int initVal = snakeBody.size() - 3;
+	for (int i = 0; i < initVal; i++)
+	{
+		snakeBody.pop_back();
+	}
+	
+	for (int i = 0; i < snakeBody.size(); i++)
+	{
+		snakeBody[i].position.x = 5;
+		snakeBody[i].position.y = 7 - i;
+	}
+}

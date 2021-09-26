@@ -2,7 +2,7 @@
 
 Textbox::Textbox()
 {
-	Setup(5, 9, 200, sf::Vector2f(0, 0));
+	Setup(3, 14, 150, sf::Vector2f(16, 16));
 }
 
 Textbox::Textbox(int visible, int charSize, int width, sf::Vector2f screenPos)
@@ -20,7 +20,7 @@ void Textbox::Setup(int visible, int charSize, int width, sf::Vector2f screenPos
 	numOfVisiblesLines = visible;
 
 	// some padding from upper-left corner
-	sf::Vector2f offset(2.f, 2.f);
+	sf::Vector2f offset(8.f, 8.f);
 
 	font.loadFromFile("F:\\gamedev\\snake_game\\snake_game\\src\\arial.ttf");
 
@@ -36,10 +36,10 @@ void Textbox::Setup(int visible, int charSize, int width, sf::Vector2f screenPos
 	
 }
 
-void Textbox::Add(const char* message)
+void Textbox::Add(std::string message)
 {
 	messages.push_back(message);
-	if (messages.size() < 6) return;
+	if (messages.size() < 3) return;
 	messages.erase(messages.begin());
 }
 
@@ -55,6 +55,7 @@ void Textbox::Render(sf::RenderWindow& window)
 	for (int i = 0; i < messages.size(); i++)
 	{
 		whole_messages.append(messages[i]);
+		whole_messages.append("\n");
 	}
 	
 	if (!whole_messages.empty())

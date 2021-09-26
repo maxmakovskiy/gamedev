@@ -74,7 +74,12 @@ void World::Update(Snake& player)
 		player.GetPositionOfSnakeHead().x >= (gridSizeX - 1) ||
 		player.GetPositionOfSnakeHead().y >= (gridSizeY - 1))
 	{ // call Lose method for illustrate collision with wall
-		player.Lose();
+		player.DecreaseLives();
+		
+		if (player.GetLives() == 0)
+			player.Lose();
+	
+		player.RespawnToStart();
 	}
 }
 

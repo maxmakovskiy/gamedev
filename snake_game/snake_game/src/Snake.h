@@ -40,6 +40,7 @@ public:
 	inline int GetLives() const { return this->playerLives; }
 	inline int GetScore() const { return this->playerScore; }
 	inline bool IsLost() const { return this->lost; }
+	inline void DecreaseLives() { this->playerLives--; }
 	
 	// lose control is happening here
 	inline void Lose() { this->lost = true; }
@@ -51,6 +52,7 @@ public:
 	void Move(); // move sprites
 	void Tick(); // update method
 	void Cut(int segments); // method for cutting snake after head of snake touch own body or walls
+	void RespawnToStart();
 
 	void Render(sf::RenderWindow& window);
 
@@ -64,7 +66,7 @@ private:
 	int oneRectSize;			// size of one graphic rectangle that represents one Snake Segment
 	sf::RectangleShape bodyRect;// whole shape that will be using for rendering the snake
 
-	void CheckCollision();
+	void CheckCollision(); 
 
 };
 

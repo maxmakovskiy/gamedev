@@ -23,6 +23,7 @@ public:
 	sf::Time GetElapsedTime() const { this->elapsedTime; }
 
 	void RestartClock();
+
 private:
 	Window window;
 
