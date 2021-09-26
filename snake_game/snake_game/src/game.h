@@ -3,12 +3,14 @@
 #include "Snake.h"
 #include "world.h"
 #include "window.h"
+#include "Textbox.h"
 
 class Game
 {
 public:
 	World world;
 	Snake snake;
+	Textbox textbox;
 
 	Game();
 	~Game() {}

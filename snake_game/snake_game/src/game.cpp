@@ -3,7 +3,10 @@
 Game::Game() 
 	: window("Snake", sf::Vector2u(800, 600))
 	, snake(this->world.GetBlockSize())
-	, world(sf::Vector2u(800, 600)) { }
+	, world(sf::Vector2u(800, 600)) 
+{ 
+	textbox.Setup(5, 14, 350, sf::Vector2f(225, 0));
+}
 
 void Game::HandleInput()
 {
@@ -11,6 +14,7 @@ void Game::HandleInput()
 		&& (this->snake.GetDirection() != Direction::Down))
 	{
 		this->snake.SetDirection(Direction::Up);
+		this->textbox.Add("DIRECTION UP");
 	}
 	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)
 		&& (this->snake.GetDirection() != Direction::Up))
@@ -33,10 +37,12 @@ void Game::HandleInput()
 void Game::Update()
 {
 	this->window.Update();
-	
-	float timeStep = 1.0f / this->snake.GetSpeed();
 
-	if (this->elapsedTime.asSeconds() >= timeStep)
+	// fixed time step
+	// determine amount of time for one frame
+	float timeStep = 1.0f / this->snake.GetSpeed();
+	float temp = this->elapsedTime.asSeconds();
+	if (temp >= timeStep)
 	{
 		this->snake.Tick();
 		this->world.Update(this->snake);
@@ -56,6 +62,7 @@ void Game::Render()
 	this->window.BeginDraw();
 	this->snake.Render(*(this->window.GetRenderWindow()));
 	this->world.Render(*(this->window.GetRenderWindow()));
+	this->textbox.Render(*(this->window.GetRenderWindow()));
 	this->window.EndDraw();
 }
 

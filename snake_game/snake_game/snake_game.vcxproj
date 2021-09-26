@@ -150,12 +150,14 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\snake.cpp" />
+    <ClCompile Include="src\textbox.cpp" />
     <ClCompile Include="src\window.cpp" />
     <ClCompile Include="src\world.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\Snake.h" />
+    <ClInclude Include="src\Textbox.h" />
     <ClInclude Include="src\window.h" />
     <ClInclude Include="src\world.h" />
   </ItemGroup>
