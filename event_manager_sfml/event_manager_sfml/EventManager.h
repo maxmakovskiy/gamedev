@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <unordered_map>
+#include <functional>
 
 // All type of events
 enum class EventType
@@ -97,8 +98,53 @@ struct Binding
 // alias for storing unique bindings and store action name as key string 
 using Bindings = std::unordered_map<std::string, Binding*>;
 
+// alias for callbacks
+// unordered_map ensure to have one callback per action
+using Callbacks = std::unordered_map<std::string, std::function<void(EventDetails*)>>;
 
+class EventManager
+{
+public:
+	EventManager();
+	~EventManager();
 
+	bool AddBinding(Binding* binding);
+	bool RemoveBinding(std::string name);
+
+	void SetFocus(const bool& focus);
+
+	template<class T>
+	bool AddCallback(
+		const std::string& name,
+		void(T::* func)(EventDetails*), T* instance
+	)
+	{
+		std::function temp = std::bind(func, instance, std::placeholder::_1);
+		return callbacks.emplace(name, temp).second;
+
+	}
+	
+	void RemoveCallback(const std::string& name)
+	{
+		callbacks.erase(name);
+	}
+
+	void HandleEvent(sf::Event& event);
+	void Update();
+
+	sf::Vector2i GetMousePos(sf::RenderWindow* window = nullptr)
+	{
+		return (window ? sf::Mouse::getPosition(*window) : sf::Mouse::getPosition());
+	}
+	
+private:
+	Bindings bindings;
+	Callbacks callbacks;
+	bool focus;
+
+	// load bindings for file
+	void LoadBinding();
+};
 
 
 
