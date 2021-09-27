@@ -4,6 +4,9 @@
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 // All type of events
 enum class EventType
@@ -119,7 +122,7 @@ public:
 		void(T::* func)(EventDetails*), T* instance
 	)
 	{
-		std::function temp = std::bind(func, instance, std::placeholder::_1);
+		std::function temp = std::bind(func, instance, std::placeholders::_1);
 		return callbacks.emplace(name, temp).second;
 
 	}

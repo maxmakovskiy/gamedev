@@ -160,7 +160,79 @@ void EventManager::Update()
 
 }
 
-void LoadBinding();
+void EventManager::LoadBinding()
+{
+	std::string delimiter = ":";
+
+	std::ifstream ifbindings;
+	ifbindings.open("keys.cfg");
+	if (!ifbindings.is_open())
+	{
+		std::cout << "Could not open key.cfg file!" << std::endl;
+		return;
+	}
+
+	std::string line;
+	while (std::getline(ifbindings, line))
+	{
+		// let's parse string like Window_close 0:0
+		// where "Window_close" is callback's name
+		// (first)0 - type of event
+		// : - delimiter
+		// (second)0 - code
+
+		std::stringstream keystream(line);
+		std::string callbackName;
+		
+		// operator >> uses white spaces as delimiters by default
+		keystream >> callbackName;
+
+		Binding* bind = new Binding(callbackName);
+
+		while (!keystream.eof())
+		{
+			std::string keyval;
+			keystream >> keyval;
+			int start = 0;
+			int end = keyval.find(delimiter);
+			
+			// if this string invalide that delete its binding
+			if (end == std::string::npos)
+			{
+				delete bind;
+				bind = nullptr;
+				break;
+			}
+		
+			//
+			EventType type = EventType(std::stoi(keyval.substr(start, end - start)));
+
+			int code = stoi(
+				keyval.substr(end + delimiter.length(), 
+					keyval.find(delimiter, end + delimiter.length())));
+
+			EventInfo info;
+			info.code = code;
+
+			bind->BindEvent(type, info);
+		}
+
+		// Attempt to add bind to EventManager
+		// if it operation fails
+		// than delete constructed bind
+		if (!AddBinding(bind))
+		{
+			delete bind;
+		}
+		
+		// clear pointer to bind
+		bind = nullptr;
+	}
+	
+	// close opened resources
+	ifbindings.close();
+
+}
 
 void SetFocus(const bool& focus);
 
