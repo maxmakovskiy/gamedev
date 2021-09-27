@@ -30,18 +30,18 @@ struct EventInfo
 {
 	union
 	{
-		int eventCode;
+		int code;
 	};
 
 	// this constructor needed for events which only need type of event
 	EventInfo()
 	{
-		eventCode = 0;
+		code = 0;
 	}
 
 	EventInfo(int code)
 	{
-		eventCode = code;
+		code = code;
 	}
 };
 
@@ -129,7 +129,9 @@ public:
 		callbacks.erase(name);
 	}
 
+	// handle SFML events
 	void HandleEvent(sf::Event& event);
+	// hadnle real-time input checking
 	void Update();
 
 	sf::Vector2i GetMousePos(sf::RenderWindow* window = nullptr)
