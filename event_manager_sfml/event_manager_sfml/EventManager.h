@@ -114,7 +114,7 @@ public:
 	bool AddBinding(Binding* binding);
 	bool RemoveBinding(std::string name);
 
-	void SetFocus(const bool& focus);
+	void SetFocus(const bool& focus) { this->focus = focus; }
 
 	template<class T>
 	bool AddCallback(
@@ -150,10 +150,4 @@ private:
 	// load bindings for file
 	void LoadBinding();
 };
-
-
-
-
-
-
 
