@@ -1,7 +1,7 @@
 #pragma once
 
-
 #include "window.h"
+#include "EventManager.h"
 
 class Game
 {
@@ -17,7 +17,7 @@ public:
 	sf::Time GetElaped();
 	void RestartClock();
 private:
-	void MoveSprite();
+	void MoveSprite(EventDetails* details = nullptr);
 
 	Window window;
 	sf::Texture texture;

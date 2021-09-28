@@ -30,14 +30,15 @@ public:
 	// draws passed object
 	void Draw(sf::Drawable& drawable);
 
-	void Close(EventDetails* details = nullptr) { done = true; }
+	inline void Close(EventDetails* details = nullptr) { done = true; }
 
 	// methods for retrieving infomation about window
 	// without giving too match control to outside of this class
 	inline bool IsDone() { return done; }
-	bool IsFullscreen() { return fullscreen; }
-	bool IsFocus() { return focused; }
-	sf::Vector2u GetWindowSize() { return windowSize; }
+	inline bool IsFullscreen() { return fullscreen; }
+	inline bool IsFocus() { return focused; }
+	inline sf::Vector2u GetWindowSize() { return windowSize; }
+	inline sf::RenderWindow* GetRenderWindow() { return &window; }
 
 	inline EventManager* GetEventManager() { return &eventManager; }
 

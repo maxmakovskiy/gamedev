@@ -38,34 +38,13 @@ Window* Game::GetWindow()
 	return &this->window;
 }
 
-void Game::MoveSprite()
+void Game::MoveSprite(EventDetails* details = nullptr)
 {
-	sf::Vector2u windowSize = this->window.GetWindowSize();
-	sf::Vector2u textureSize = this->texture.getSize();
+	// get current mouse position relative to current window
+	sf::Vector2i mousePosition = window.GetEventManager()->GetMousePos(window.GetRenderWindow());
 
-	if((this->sprite.getPosition().x + (textureSize.x / 2) > windowSize.x && this->speed.x > 0) ||
-		(this->sprite.getPosition().x - (textureSize.x / 2) < 0 && this->speed.x < 0))
-	{
-		// Reverse the direction on X axis.
-		this->speed.x = -this->speed.x;
-	}
-
-	if((this->sprite.getPosition().y + (textureSize.y / 2) > windowSize.y && this->speed.y > 0) ||
-		(this->sprite.getPosition().y - (textureSize.y / 2) < 0 && this->speed.y < 0))
-	{
-		// Reverse the direction on Y axis.
-		this->speed.y = -this->speed.y;
-	}
-
-	// get time since clock was last time (re-)started
-	float timeElapsed = this->elapsed.asSeconds();
-	this->sprite.setPosition(
-		// determine distance for ball move over one iteration
-		// distance = speed(hardcoded) * time(that system consumes to make one iteration through the main game loop)
-		this->sprite.getPosition().x + (this->speed.x * timeElapsed),
-		this->sprite.getPosition().y + (this->speed.y * timeElapsed)
-	);
-
+	sprite.setPosition(mousePosition.x, mousePosition.y);
+	std::cout << "Moving ball to (" << mousePosition.x << ":" << mousePosition.y << ");" << std::endl;
 }
 
 sf::Time Game::GetElaped()
