@@ -60,10 +60,10 @@ void EventManager::HandleEvent(sf::Event& event)
 			if (sfmlEvent == EventType::KeyDown ||
 				sfmlEvent == EventType::KeyUp)
 			{
-				if (eventItr.second.code == event.key.code)
+				if (eventItr.second.keyCode == event.key.code)
 				{
 					if (bnd->details.keyCode != -1)
-						bnd->details.keyCode = eventItr.second.code;
+						bnd->details.keyCode = eventItr.second.keyCode;
 
 					bnd->counter++;
 					break;
@@ -72,13 +72,13 @@ void EventManager::HandleEvent(sf::Event& event)
 			else if (sfmlEvent == EventType::MouseButtonPressed ||
 				sfmlEvent == EventType::MouseButtonUp)
 			{
-				if (eventItr.second.code == event.mouseButton.button)
+				if (eventItr.second.keyCode == event.mouseButton.button)
 				{
 					bnd->details.mouse.x = event.mouseButton.x;
 					bnd->details.mouse.y = event.mouseButton.y;
 
 					if (bnd->details.keyCode != -1)
-						bnd->details.keyCode = eventItr.second.code;
+						bnd->details.keyCode = eventItr.second.keyCode;
 
 					bnd->counter++;
 					break;
@@ -119,11 +119,11 @@ void EventManager::Update()
 			{
 			case EventType::Keyboard:
 			{
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(eventItr.second.code)))
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(eventItr.second.keyCode)))
 				{
 
 					if (bind->details.keyCode != -1)
-						bind->details.keyCode = eventItr.second.code;
+						bind->details.keyCode = eventItr.second.keyCode;
 					
 					// incresing counter for registering match
 					bind->counter++;
@@ -131,10 +131,10 @@ void EventManager::Update()
 			} break;
 			case EventType::Mouse:
 			{
-				if (sf::Mouse::isButtonPressed(sf::Mouse::Button(eventItr.second.code)))
+				if (sf::Mouse::isButtonPressed(sf::Mouse::Button(eventItr.second.keyCode)))
 				{
 					if (bind->details.keyCode != -1)
-						bind->details.keyCode = eventItr.second.code;
+						bind->details.keyCode = eventItr.second.keyCode;
 
 					bind->counter++;
 				}
@@ -212,7 +212,7 @@ void EventManager::LoadBinding()
 					keyval.find(delimiter, end + delimiter.length())));
 
 			EventInfo info;
-			info.code = code;
+			info.keyCode = code;
 
 			bind->BindEvent(type, info);
 		}

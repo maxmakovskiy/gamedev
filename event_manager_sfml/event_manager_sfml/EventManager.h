@@ -33,18 +33,18 @@ struct EventInfo
 {
 	union
 	{
-		int code;
+		int keyCode;
 	};
 
 	// this constructor needed for events which only need type of event
 	EventInfo()
 	{
-		code = 0;
+		keyCode = 0;
 	}
 
 	EventInfo(int code)
 	{
-		code = code;
+		keyCode = code;
 	}
 };
 
@@ -119,10 +119,11 @@ public:
 	template<class T>
 	bool AddCallback(
 		const std::string& name,
-		void(T::* func)(EventDetails*), T* instance
+		void(T::*func)(EventDetails*), T* instance
 	)
 	{
-		std::function temp = std::bind(func, instance, std::placeholders::_1);
+		auto temp = std::bind(func, instance, std::placeholders::_1);
+		//std::function temp = std::bind(func, instance, std::placeholders::_1);
 		return callbacks.emplace(name, temp).second;
 
 	}
