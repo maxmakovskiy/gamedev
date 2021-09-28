@@ -123,9 +123,7 @@ public:
 	)
 	{
 		auto temp = std::bind(func, instance, std::placeholders::_1);
-		//std::function temp = std::bind(func, instance, std::placeholders::_1);
 		return callbacks.emplace(name, temp).second;
-
 	}
 	
 	void RemoveCallback(const std::string& name)

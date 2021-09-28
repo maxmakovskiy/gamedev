@@ -9,10 +9,14 @@ Game::Game()
 		fprintf(stderr, "Error occurs while load texture from file by path: %s", pathToFile);
 	}
 	
-	this->sprite.setTexture(this->texture);
-	this->speed = sf::Vector2f(200.0f, 200.0f);
+	sprite.setTexture(this->texture);
+	speed = sf::Vector2f(200.0f, 200.0f);
 
-	this->sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+	int size = texture.getSize().x;
+	sprite.setOrigin(size / 2, size / 2);
+
+	// Setup callback
+	window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
 
 }
 
@@ -23,7 +27,6 @@ void Game::HandleInput() {}
 void Game::Update()
 {
 	this->window.Update(); // update window events
-	this->MoveSprite();
 }
 
 void Game::Render()
@@ -38,7 +41,7 @@ Window* Game::GetWindow()
 	return &this->window;
 }
 
-void Game::MoveSprite(EventDetails* details = nullptr)
+void Game::MoveSprite(EventDetails* details)
 {
 	// get current mouse position relative to current window
 	sf::Vector2i mousePosition = window.GetEventManager()->GetMousePos(window.GetRenderWindow());
