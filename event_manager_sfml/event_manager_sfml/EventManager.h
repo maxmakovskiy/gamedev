@@ -136,7 +136,7 @@ public:
 	// hadnle real-time input checking
 	void Update();
 
-	sf::Vector2i GetMousePos(sf::RenderWindow* window = nullptr)
+	sf::Vector2i GetMousePosition(sf::RenderWindow* window = nullptr)
 	{
 		return (window ? sf::Mouse::getPosition(*window) : sf::Mouse::getPosition());
 	}

@@ -44,7 +44,7 @@ Window* Game::GetWindow()
 void Game::MoveSprite(EventDetails* details)
 {
 	// get current mouse position relative to current window
-	sf::Vector2i mousePosition = window.GetEventManager()->GetMousePos(window.GetRenderWindow());
+	sf::Vector2i mousePosition = window.GetEventManager()->GetMousePosition(window.GetRenderWindow());
 
 	sprite.setPosition(mousePosition.x, mousePosition.y);
 	std::cout << "Moving ball to (" << mousePosition.x << ":" << mousePosition.y << ");" << std::endl;
