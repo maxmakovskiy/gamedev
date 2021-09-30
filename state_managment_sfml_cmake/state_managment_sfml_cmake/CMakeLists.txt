@@ -1,9 +1,14 @@
-﻿# CMakeList.txt : CMake project for state_managment_sfml_cmake, include source and define
-# project specific logic here.
-#
-cmake_minimum_required (VERSION 3.8)
+﻿cmake_minimum_required (VERSION 3.8)
 
-# Add source to this project's executable.
-add_executable (main main.cpp)
+set(SFML_DIR "F:/SFML/x64/SFML-2.5.1/lib/cmake/SFML")
+set(SFML_STATIC_LIBRARIES TRUE)
 
-# TODO: Add tests and install targets if needed.
+find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
+
+add_executable (main src/main.cpp lib/game.cpp lib/window.cpp lib/EventManager.cpp)
+
+target_include_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
+
+target_link_libraries(main sfml-graphics sfml-system sfml-window)
+
+
