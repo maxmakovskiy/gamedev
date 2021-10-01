@@ -57,6 +57,6 @@ protected:
 	// these flags indicate
 	// if state also needs to render or update
 	// a state that came before it
-	bool transparent;
-	bool transcendent;
+	bool transparent; // for drawing states that come before it
+	bool transcendent; // for updating states that come before it
 };

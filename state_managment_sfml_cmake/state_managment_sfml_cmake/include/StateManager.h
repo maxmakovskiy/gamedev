@@ -38,7 +38,47 @@ using TypeContainer = std::vector<StateType>;
 // derived from the BaseState class
 using StateFactory = std::unordered_man<StateType, std::function<BaseState*(void)>;
 
+class StateManager
+{
+public:
+	StateManager(SharedContext* sharedContext);
+	~StateManager();
 
+	void Update(const sf::Time& delataTime);
+	void Draw();
+
+	void ProcessRequests();
+
+	inline SharedContext* GetContext() { return sharedContext; }
+	//if we currently have certain state on the stack
+	bool HasState(const StateType& stateType);
+
+	// using for switch from current state to given state
+	void SwitchTo(const StateType& stateType);
+	// removing state from the stack by its type
+	void Remove(const StateType& stateType);
+
+private:
+	SharedContext* sharedContext;
+	StateContainer states;
+	StateFactory StateFactory;
+
+	// we cannot simply delete state from container at any time,
+	// toRemove serves to keep tracking states which
+	// we want to delete and deleting them in the end of game loop
+	TypeContainer toRemove;
+
+	void CreateState(const StateType& stateType);
+	void RemoveState(const StateType& stateType);
+
+	template<class T>
+	void RegisterState(const StateType& stateType)
+	{
+		stateFactory[stateType] = [this]() -> BaseState
+		{ return new T(this); };
+	}
+
+};
 
 
 
