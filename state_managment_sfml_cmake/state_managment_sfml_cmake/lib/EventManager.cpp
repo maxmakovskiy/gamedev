@@ -146,9 +146,27 @@ void EventManager::Update()
 
 			if (bind->events.size() == bind->counter)
 			{
-				auto callItr = callbacks.find(bind->name);
-				if (callItr != callbacks.end())
-					callItr->second(&bind->details);
+				auto stateCallbacks = callbacks.find(currentState);
+
+				// construct state type by no valid value - 0
+				// that allow us to process global callbacks
+				// for Window class
+				// MAGIC
+				auto otherCallbacks = callbacks.find(StateType(0));
+
+				if (stateCallbacks != callbacks.end())
+				{
+					auto callItr = stateCallbacks->second.find(bind->name);
+					if (callItr != stateCallvacks->second.end())
+						callItr->second(&bind->details);
+				}
+
+				if (otherCallbacks != callbacks.end())
+				{
+					auto callItr = otherCallbacks->second.find(bind->name);
+					if (callItr != otherCallbacks->second.end())
+						callItr->second(&bind->details);
+				}
 
 			}
 
@@ -177,7 +195,7 @@ void EventManager::LoadBinding()
 	while (std::getline(ifbindings, line))
 	{
 		// let's parse string like Window_close 0:0
-		// where "Window_close" is callback's name
+		// where "Window_close" is 's name
 		// (first)0 - type of event
 		// : - delimiter
 		// (second)0 - code
@@ -235,5 +253,14 @@ void EventManager::LoadBinding()
 
 }
 
-void SetFocus(const bool& focus);
+bool RemoveCallback(StateType state, const std::string& name)
+{
+	auto itr = callbacks.find(state);
+	if (itr == callbacks.end()) return false;
 
+	auto innerItr = itr.second.find(name);
+	if (innerItr == innerItr.second.end()) return false;
+
+	innerItr->second.erase(name);
+	return true;
+}

@@ -103,7 +103,13 @@ using Bindings = std::unordered_map<std::string, Binding*>;
 
 // alias for callbacks
 // unordered_map ensure to have one callback per action
-using Callbacks = std::unordered_map<std::string, std::function<void(EventDetails*)>>;
+using CallbackContainer = std::unordered_map<std::string, std::function<void(EventDetails*)>>;
+
+// container that serves for 
+// grouping callbacks together by state
+// we need to have one CallbackContainer per state and one callback function per name
+enum class StateType;
+using Callbacks = std::unordered_map<StateType, CallbackContainer>;
 
 class EventManager
 {
@@ -118,18 +124,19 @@ public:
 
 	template<class T>
 	bool AddCallback(
+		StateType state,
 		const std::string& name,
-		void(T::*func)(EventDetails*), T* instance
+		void(T::*func)(EventDetails*),
+		T* instance
 	)
 	{
+		auto itr = callbacks.emplace(state, CallbackContainer()).first;
 		auto temp = std::bind(func, instance, std::placeholders::_1);
-		return callbacks.emplace(name, temp).second;
+
+		return itr->second.emplace(name, temp).second;
 	}
 	
-	void RemoveCallback(const std::string& name)
-	{
-		callbacks.erase(name);
-	}
+	bool RemoveCallback(StateType state, const std::string& name);
 
 	// handle SFML events
 	void HandleEvent(sf::Event& event);
@@ -144,6 +151,7 @@ public:
 private:
 	Bindings bindings;
 	Callbacks callbacks;
+	StateType currentState;
 	bool focus;
 
 	// load bindings for file
