@@ -157,7 +157,7 @@ void EventManager::Update()
 				if (stateCallbacks != callbacks.end())
 				{
 					auto callItr = stateCallbacks->second.find(bind->name);
-					if (callItr != stateCallvacks->second.end())
+					if (callItr != stateCallbacks->second.end())
 						callItr->second(&bind->details);
 				}
 
@@ -253,14 +253,14 @@ void EventManager::LoadBinding()
 
 }
 
-bool RemoveCallback(StateType state, const std::string& name)
+bool EventManager::RemoveCallback(StateType state, const std::string& name)
 {
 	auto itr = callbacks.find(state);
 	if (itr == callbacks.end()) return false;
 
-	auto innerItr = itr.second.find(name);
-	if (innerItr == innerItr.second.end()) return false;
+	auto innerItr = itr->second.find(name);
+	if (innerItr == itr->second.end()) return false;
 
-	innerItr->second.erase(name);
+	itr->second.erase(name);
 	return true;
 }
