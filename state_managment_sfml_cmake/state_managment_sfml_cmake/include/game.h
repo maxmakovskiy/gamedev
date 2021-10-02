@@ -15,11 +15,17 @@ public:
 
 	Window* GetWindow();
 	sf::Time GetElaped();
-	void RestartClock();
+
+
+	void LateUpdate();
 private:
 	void MoveSprite(EventDetails* details = nullptr);
-
+	void RestartClock();
+	
 	Window window;
+	StateManager stateManager;
+	SharedContext context;
+
 	sf::Texture texture;
 	sf::Sprite sprite;
 	sf::Vector2f speed;

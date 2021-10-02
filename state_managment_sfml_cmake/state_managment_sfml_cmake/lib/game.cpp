@@ -2,8 +2,14 @@
 
 Game::Game()
 	: window("Bouncing Ball", sf::Vector2u(800, 600))
+	, stateManager(&sharedContext)
 {
-	const char* pathToFile = "F:\\gamedev\\correct_design_of_simple_drawing_sfml\\correct_design_of_simple_drawing_sfml\\ballYellow.png";
+	// setup context
+	sharedContext.window = &window;
+	sharedContext.eventManager = window.GetEventManager();
+	stateManager.SwitchTo(StateType:Intro);
+
+/*	const char* pathToFile = "F:\\gamedev\\correct_design_of_simple_drawing_sfml\\correct_design_of_simple_drawing_sfml\\ballYellow.png";
 	if (!this->texture.loadFromFile(pathToFile))
 	{
 		fprintf(stderr, "Error occurs while load texture from file by path: %s", pathToFile);
@@ -17,7 +23,7 @@ Game::Game()
 
 	// Setup callback
 	window.GetEventManager()->AddCallback("Move", &Game::MoveSprite, this);
-
+*/
 }
 
 Game::~Game() {}
@@ -26,19 +32,21 @@ void Game::HandleInput() {}
 
 void Game::Update()
 {
-	this->window.Update(); // update window events
+	window.Update(); // update window events
+	stateManager.Update(elapsed);
 }
 
 void Game::Render()
 {
-	this->window.BeginDraw(); // clear
-	this->window.Draw(this->sprite);
-	this->window.EndDraw(); // display
+	window.BeginDraw(); // clear
+	stateManager.Draw();	
+	//window.Draw(this->sprite);
+	window.EndDraw(); // display
 }
 
 Window* Game::GetWindow()
 {
-	return &this->window;
+	return &window;
 }
 
 void Game::MoveSprite(EventDetails* details)
@@ -52,11 +60,16 @@ void Game::MoveSprite(EventDetails* details)
 
 sf::Time Game::GetElaped()
 {
-	return this->elapsed;
+	return elapsed;
 }
 
 void Game::RestartClock()
 {
-	this->elapsed = this->clock.restart();
+	elapsed = clock.restart();
 }
 
+void Game::LateUpdate()
+{
+	stateManager.ProcessRequests();
+	RestartClock();
+}
