@@ -2,6 +2,7 @@
 
 #include "window.h"
 #include "EventManager.h"
+#include "StateManager.h"
 
 class Game
 {
@@ -19,12 +20,11 @@ public:
 
 	void LateUpdate();
 private:
-	void MoveSprite(EventDetails* details = nullptr);
 	void RestartClock();
-	
+
 	Window window;
 	StateManager stateManager;
-	SharedContext context;
+	SharedContext sharedContext;
 
 	sf::Texture texture;
 	sf::Sprite sprite;

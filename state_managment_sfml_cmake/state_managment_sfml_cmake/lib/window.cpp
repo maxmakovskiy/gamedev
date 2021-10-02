@@ -65,8 +65,8 @@ void Window::Draw(sf::Drawable& drawable)
 void Window::Setup(const char* title, const sf::Vector2u& size)
 {
 	focused = true; // window in focus by default
-	eventManager.AddCallback("Fullscreen_toggle", &Window::ToggleFullscreen, this);
-	eventManager.AddCallback("Window_close", &Window::Close, this);
+	eventManager.AddCallback(StateType(0), "Fullscreen_toggle", &Window::ToggleFullscreen, this);
+	eventManager.AddCallback(StateType(0), "Window_close", &Window::Close, this);
 
 	this->windowTitle = title;
 	this->windowSize = size;

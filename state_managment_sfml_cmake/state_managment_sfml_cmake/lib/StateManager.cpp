@@ -1,17 +1,17 @@
-#include <../inlcude/StateManager.h>
+#include <../include/StateManager.h>
 
 StateManager::StateManager(SharedContext* sharedContext)
 	: sharedContext(sharedContext)
 {
 	RegisterState<IntroState>(StateType::Intro);
-	RegisterState<MainMenuState>(StateType::MainMenu);
-	RegisterState<GameState>(StateType::Game);
-	RegisterState<PauseState>(StateType::Paused);
+//	RegisterState<MainMenuState>(StateType::MainMenu);
+//	RegisterState<GameState>(StateType::Game);
+//	RegisterState<PauseState>(StateType::Paused); 
 }
 
 StateManager::~StateManager()
 {
-	for (StateType& state : states)
+	for (auto& state : states)
 	{
 		state.second->OnDestroy();
 		delete state.second;
@@ -27,7 +27,7 @@ void StateManager::Draw()
 	if (states.back().second->IsTransparent() &&
 		states.size() > 1)
 	{ // if we have more than 1 element in container and it is transparent
-		std::vector<StateType>::iterator itr = states.end();
+		std::vector<std::pair<StateType, BaseState*>>::iterator itr = states.end();
 
 		// iterate over vector from back to front
 		// and search first transperent state
@@ -64,7 +64,7 @@ void StateManager::Update(const sf::Time& deltaTime)
 	if (states.back().second->IsTranscendent() &&
 		states.size() > 1)
 	{
-		std::vector<StateType>::iterator itr = states.end();
+		std::vector<std::pair<StateType, BaseState*>>::iterator itr = states.end();
 
 		while(itr != states.begin())
 		{
@@ -94,12 +94,12 @@ void StateManager::Update(const sf::Time& deltaTime)
 
 bool StateManager::HasState(const StateType& stateType)
 {
-	for (std::vector<StateType>::iterator itr = states.begin();
+	for (auto itr = states.begin();
 		itr != states.end(); itr++)
 	{
 		if (itr->first == stateType)
 		{
-			std::vector<StateType>::iterator removeItr = std::find(
+			auto removeItr = std::find(
 				toRemove.begin(), toRemove.end(), stateType);
 
 			// if searched state contains in stateContainer
@@ -120,7 +120,7 @@ void StateManager::Remove(const StateType& stateType)
 	toRemove.push_back(stateType);
 }
 
-void Statemanager::ProcessRequests()
+void StateManager::ProcessRequests()
 {
 	while(toRemove.begin() != toRemove.end())
 	{
@@ -135,7 +135,7 @@ void StateManager::SwitchTo(const StateType& stateType)
 	// we need to force new state
 	sharedContext->eventManager->SetCurrentState(stateType);
 
-	for (std::vector<StateType>::iterator itr = states.begin();
+	for (std::vector<std::pair<StateType, BaseState*>>::iterator itr = states.begin();
 		 itr != states.end(); itr++)
 	{
 		// if given stateType already contains
@@ -153,7 +153,7 @@ void StateManager::SwitchTo(const StateType& stateType)
 			// and push it on the top of stack
 			states.erase(itr);
 			states.emplace_back(tmpStateType, tmpState);
-			tempState->Activate();
+			tmpState->Activate();
 			return;
 		}
 	}
@@ -174,9 +174,9 @@ void StateManager::SwitchTo(const StateType& stateType)
 void StateManager::CreateState(const StateType& stateType)
 {
 	// newState - iterator which pointed to the element with stateType key
-	auto newState = statesFactory.find(stateType);
+	auto newState = stateFactory.find(stateType);
 	// if element by stateType key is not founded
-	if (newState == states.end()) return;
+	if (newState == stateFactory.end()) return;
 
 	// invoke second() as function 
 	// which returns a pointer to newly created state class
@@ -188,10 +188,10 @@ void StateManager::CreateState(const StateType& stateType)
 
 void StateManager::RemoveState(const StateType& stateType)
 {
-	for (std::vector<StateType>::iterator itr = states.begin();
+	for (std::vector<std::pair<StateType, BaseState*>>::iterator itr = states.begin();
 		 itr != states.end(); itr++)
 	{
-		if (itr.first == stateType)
+		if (itr->first == stateType)
 		{
 			itr->second->OnDestroy();
 			delete itr->second;

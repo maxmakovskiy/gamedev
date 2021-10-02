@@ -183,7 +183,8 @@ void EventManager::LoadBinding()
 	std::string delimiter = ":";
 
 	std::ifstream ifbindings;
-	const char* pathToFile = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\src\\keys.cfg";
+	const char* pathToFile = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\resources\\keys.cfg";
+//	const char* pathToFile = "..\\resources\\keys.cfg";
 	ifbindings.open(pathToFile);
 	if (!ifbindings.is_open())
 	{

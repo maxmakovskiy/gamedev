@@ -1,3 +1,5 @@
+#pragma once
+#include <SFML/Graphics.hpp>
 // forward declaration StateManager class
 // for purpose of exclude recursive definition
 // because StateManager will have contains 
@@ -10,7 +12,7 @@ class BaseState
 	friend class StateManager;
 public:
 	BaseState(StateManager* stateManager)
-		: StateManager(StateManager)
+		: stateManager(stateManager)
 		, transparent(false)
 		, transcendent(false)
 	{}
@@ -18,7 +20,7 @@ public:
 	// couse we use virtual functions
 	// and compiler will choose destructor
 	// through virtual method table
-	virtual ~BaseState();
+	virtual ~BaseState() {}
 
 	// get invoked when state is created and pushed on the stack
 	virtual void OnCreate() = 0;
@@ -40,7 +42,7 @@ public:
 		this->transparent = transparent;
 	} 
 
-	inline bool IsTransparent() conts { return this->transparent; }
+	inline bool IsTransparent() const { return this->transparent; }
 
 	inline void SetTranscendent(const bool& transcendent) 
 	{

@@ -5,7 +5,7 @@ set(SFML_STATIC_LIBRARIES TRUE)
 
 find_package(SFML 2.5.1 COMPONENTS graphics system window REQUIRED)
 
-add_executable (main src/main.cpp lib/game.cpp lib/window.cpp lib/EventManager.cpp)
+add_executable (main src/main.cpp lib/game.cpp lib/window.cpp lib/EventManager.cpp lib/StateManager.cpp lib/IntroState.cpp)
 
 target_include_directories(main PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
 

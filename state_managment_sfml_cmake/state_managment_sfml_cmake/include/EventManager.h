@@ -148,6 +148,8 @@ public:
 		return (window ? sf::Mouse::getPosition(*window) : sf::Mouse::getPosition());
 	}
 	
+	void inline SetCurrentState(const StateType& stateType) { currentState = stateType; }
+
 private:
 	Bindings bindings;
 	Callbacks callbacks;

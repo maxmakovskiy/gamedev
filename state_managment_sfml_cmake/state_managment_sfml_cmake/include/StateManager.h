@@ -1,11 +1,15 @@
+#pragma once
 #include <vector>
 #include <unordered_map>
 #include <functional>
+#include <SFML/Graphics.hpp>
+#include "BaseState.h"
+#include "EventManager.h"
+#include "IntroState.h"
+#include "Window.h"
 
 // forward declaration of some classes
-class Window;
-class EventManger;
-class BaseState;
+//class Window;
 
 // enumeration of all existing state types in this game
 enum class StateType : int
@@ -22,7 +26,7 @@ enum class StateType : int
 struct SharedContext
 {
 	Window* window;
-	EventManger* eventManager;
+	EventManager* eventManager;
 
 	SharedContext()
 		: window(nullptr)
@@ -36,7 +40,7 @@ using TypeContainer = std::vector<StateType>;
 // container for custom functions
 // this functions automatically produces objects of different types
 // derived from the BaseState class
-using StateFactory = std::unordered_man<StateType, std::function<BaseState*(void)>;
+using StateFactory = std::unordered_map<StateType, std::function<BaseState*(void)>>;
 
 class StateManager
 {
@@ -61,7 +65,7 @@ public:
 private:
 	SharedContext* sharedContext;
 	StateContainer states;
-	StateFactory StateFactory;
+	StateFactory stateFactory;
 
 	// we cannot simply delete state from container at any time,
 	// toRemove serves to keep tracking states which
@@ -74,7 +78,7 @@ private:
 	template<class T>
 	void RegisterState(const StateType& stateType)
 	{
-		stateFactory[stateType] = [this]() -> BaseState
+		stateFactory[stateType] = [this]() -> BaseState*
 		{ return new T(this); };
 	}
 
