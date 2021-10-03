@@ -146,12 +146,12 @@ void EventManager::Update()
 
 			if (bind->events.size() == bind->counter)
 			{
+				// for callbacks with valid (Intro, MainMenu, Game, Paused etc.) StateType
 				auto stateCallbacks = callbacks.find(currentState);
 
 				// construct state type by no valid value - 0
 				// that allow us to process global callbacks
-				// for Window class
-				// MAGIC
+				// for Window class like Window_close or Fullscreen_toggle 
 				auto otherCallbacks = callbacks.find(StateType(0));
 
 				if (stateCallbacks != callbacks.end())
