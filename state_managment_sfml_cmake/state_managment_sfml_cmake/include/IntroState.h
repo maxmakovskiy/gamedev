@@ -26,7 +26,8 @@ public:
 private:
 	sf::Texture introTexture;
 	sf::Sprite introSprite;
-	sf::Text text;
+	sf::Text textContinueMessage;
+	sf::Text textWelcomeMessage;
 	sf::Font font;
 	float timePassed;
 };

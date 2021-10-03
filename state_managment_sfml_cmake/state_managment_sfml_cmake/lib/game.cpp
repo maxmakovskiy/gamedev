@@ -25,7 +25,6 @@ void Game::Render()
 {
 	window.BeginDraw(); // clear
 	stateManager.Draw();	
-	//window.Draw(this->sprite);
 	window.EndDraw(); // display
 }
 
