@@ -23,7 +23,8 @@ void IntroState::OnCreate()
 
 	text.setString("Press SPACE to continue");
 	text.setCharacterSize(24);
-	text.setColor(sf::Color::Black);
+	text.setOutlineThickness(0.2);
+	text.setColor(sf::Color(33, 33, 33));
 
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2,
@@ -54,7 +55,7 @@ void IntroState::Update(const sf::Time& time)
 		timePassed += time.asSeconds();
 		introSprite.setPosition(
 			introSprite.getPosition().x,
-			introSprite.getPosition().y + (48 * time.asSeconds())
+			introSprite.getPosition().y + (60 * time.asSeconds())
 		);
 	}
 }
