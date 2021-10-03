@@ -206,6 +206,9 @@ void EventManager::LoadBinding()
 		
 		// operator >> uses white spaces as delimiters by default
 		keystream >> callbackName;
+	
+		// skip commented string
+		if (callbackName == std::string("#")) continue;
 
 		Binding* bind = new Binding(callbackName);
 
