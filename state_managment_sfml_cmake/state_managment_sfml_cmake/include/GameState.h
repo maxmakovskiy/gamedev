@@ -24,7 +24,7 @@ public:
 
 private:
 	sf::Texture ballTexture;
-	sf::Sprite spriteTexture;
+	sf::Sprite ballSprite;
 	sf::Vector2f ballSpeed;
 
 };
