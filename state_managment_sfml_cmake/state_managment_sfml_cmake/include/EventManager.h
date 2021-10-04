@@ -16,6 +16,7 @@ enum class EventType
 	MouseButtonPressed = sf::Event::MouseButtonPressed,
 	MouseButtonUp = sf::Event::MouseButtonReleased,
 	MouseWheel = sf::Event::MouseWheelMoved,
+	MouseMoved = sf::Event::MouseMoved,
 	WindowResized = sf::Event::Resized,
 	GainedFocus = sf::Event::GainedFocus,
 	LostFocus = sf::Event::LostFocus,

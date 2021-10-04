@@ -12,6 +12,7 @@ public:
 	~MainMenuState() {}
 
 	void MouseClick(EventDetails* details);
+	void MouseMoved(EventDetails* details);
 
 	void OnCreate();
 	void OnDestroy();

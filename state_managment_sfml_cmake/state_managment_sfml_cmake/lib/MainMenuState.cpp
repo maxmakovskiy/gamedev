@@ -61,12 +61,15 @@ void MainMenuState::OnCreate()
 	EventManager* manager = stateManager->GetContext()->eventManager;
 	manager->AddCallback(StateType::MainMenu, "Mouse_Left",
 		&MainMenuState::MouseClick, this);
+	manager->AddCallback(StateType::MainMenu, "Mouse_Moved",
+		&MainMenuState::MouseMoved, this);
 }
 
 void MainMenuState::OnDestroy()
 {
 	EventManager* manager = stateManager->GetContext()->eventManager;
 	manager->RemoveCallback(StateType::MainMenu, "Mouse_Left");
+	manager->RemoveCallback(StateType::MainMenu, "Mouse_Moved");
 }
 
 void MainMenuState::Activate()
@@ -107,6 +110,32 @@ void MainMenuState::MouseClick(EventDetails* details)
 			}
 			else if (i == 2)
 				stateManager->GetContext()->window->Close();
+		}
+	}
+
+}
+
+void MainMenuState::MouseMoved(EventDetails* details)
+{
+	sf::Vector2i mousePosition = details->mouse;
+
+	float halfX = buttonSize.x / 2;
+	float halfY = buttonSize.y / 2;
+
+	for (int i = 0; i < 3; i++)
+	{
+		if (mousePosition.x >= buttonRects[i].getPosition().x - halfX &&
+			mousePosition.x <= buttonRects[i].getPosition().x + halfX &&
+			mousePosition.y >= buttonRects[i].getPosition().y - halfY &&
+			mousePosition.y <= buttonRects[i].getPosition().y + halfY)
+		{
+			buttonRects[i].setFillColor(sf::Color::White);
+			buttonLabels[i].setColor(sf::Color::Red);
+		}
+		else
+		{
+			buttonRects[i].setFillColor(sf::Color::Red);
+			buttonLabels[i].setColor(sf::Color::White);
 		}
 	}
 
