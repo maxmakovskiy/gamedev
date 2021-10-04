@@ -9,13 +9,13 @@ public:
 		: BaseState(stateManager)
 	{}
 
-	void Upaused(EventDetails* details);
+	void Unpaused(EventDetails* details);
 
 	void OnCreate();
 	void OnDestroy();
 
-	void Activate() {}
-	void Deactivate() {}
+	void Activate();
+	void Deactivate();
 
 	void Update(const sf::Time& time);
 	void Draw();
@@ -23,6 +23,6 @@ public:
 private:
 	sf::Text text;
 	sf::Font font;
-	sf::RectangleShape rect;
+	sf::RectangleShape rectDarker;
 };
 
