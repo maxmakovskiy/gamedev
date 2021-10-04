@@ -3,6 +3,13 @@
 
 void GameState::OnCreate()
 {
+	const char* pathToBackground = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\resources\\gameBackground.png";
+	if (!backgroundTexture.loadFromFile(pathToBackground))
+	{
+		std::cout << "Unable to load ball texture by given path " << pathToBackground << std::endl;
+	}
+	backgroundSprite.setTexture(backgroundTexture);
+
 	const char* pathToBall = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\resources\\ballYellow.png";
 	if (!ballTexture.loadFromFile(pathToBall))
 	{
@@ -56,7 +63,10 @@ void GameState::Update(const sf::Time& time)
 
 void GameState::Draw()
 {
-	stateManager->GetContext()->window->GetRenderWindow()->draw(ballSprite);
+	sf::RenderWindow* wind = stateManager->GetContext()->window->GetRenderWindow();
+
+	wind->draw(backgroundSprite);
+	wind->draw(ballSprite);
 }
 
 void GameState::MainMenu(EventDetails* details)
