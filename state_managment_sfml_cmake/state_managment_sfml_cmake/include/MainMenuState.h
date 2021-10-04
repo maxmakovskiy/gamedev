@@ -16,16 +16,17 @@ public:
 	void OnCreate();
 	void OnDestroy();
 
-	void Activate() {}
-	void Deactivate() {}
+	void Activate();
+	void Deactivate();
 
 	void Update(const sf::Time& time);
 	void Draw();
 
 private:
 	sf::Text text;
+	sf::Font font;
 	sf::Vector2f buttonSize;
-	sf::Vector2f buttonPosition;
+	sf::Vector2f startingButtonPosition;
 	unsigned int buttonPadding;
 
 	sf::RectangleShape buttonRects[3];

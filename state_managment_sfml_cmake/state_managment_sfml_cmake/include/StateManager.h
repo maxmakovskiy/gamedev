@@ -6,6 +6,7 @@
 #include "BaseState.h"
 #include "EventManager.h"
 #include "IntroState.h"
+#include "MainMenuState.h"
 #include "Window.h"
 
 // forward declaration of some classes
