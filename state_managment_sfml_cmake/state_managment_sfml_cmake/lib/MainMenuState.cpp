@@ -3,6 +3,14 @@
 
 void MainMenuState::OnCreate()
 {
+	const char* pathToTexture = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\resources\\mainMenuBackground.png";
+	if (!backgroundTexture.loadFromFile(pathToTexture))
+	{
+		std::cout << "Could not to load texture by given path " << pathToTexture << std::endl;
+	}
+	backgroundSprite.setTexture(backgroundTexture);
+
+
 	const char* pathToFont = "F:\\gamedev\\state_managment_sfml_cmake\\state_managment_sfml_cmake\\resources\\arial.ttf";
 	if (!font.loadFromFile(pathToFont))
 		std::cout << "Failed to load font from path: " << pathToFont << std::endl;
@@ -107,7 +115,9 @@ void MainMenuState::MouseClick(EventDetails* details)
 void MainMenuState::Draw()
 {
 	sf::RenderWindow* window = stateManager->GetContext()->window->GetRenderWindow();
-	
+
+	window->draw(backgroundSprite);
+
 	window->draw(text);
 
 	for (int i = 0; i < 3; i++)

@@ -23,6 +23,8 @@ public:
 	void Draw();
 
 private:
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 	sf::Text text;
 	sf::Font font;
 	sf::Vector2f buttonSize;
