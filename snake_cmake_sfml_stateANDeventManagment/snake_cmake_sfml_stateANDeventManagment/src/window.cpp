@@ -2,7 +2,7 @@
 
 Window::Window()
 {
-	this->Setup("Game", sf::Vector2u(800, 600));
+	this->Setup("Window", sf::Vector2u(720, 480));
 }
 
 Window::Window(const char* title, const sf::Vector2u& size)
@@ -10,52 +10,83 @@ Window::Window(const char* title, const sf::Vector2u& size)
 	this->Setup(title, size);
 }
 
-void Window::Setup(const char* title, const sf::Vector2u& size)
-{
-	this->title = title;
-	this->size = size;
-	this->done = false;
-	this->fullscreen = false;
-	this->Create();
-
-	// TEMPORARY
-	this->window.setFramerateLimit(60);
-}
-
-void Window::Create()
-{
-	sf::Uint32 style = this->fullscreen ? sf::Style::Fullscreen : sf::Style::Default;
-	this->window.create(sf::VideoMode(this->size.x, this->size.y, 32), this->title, style);
-}
-
 Window::~Window()
 {
 	this->Destroy();
 }
 
-void Window::Destroy()
+void Window::BeginDraw()
 {
-	this->window.close();
+	this->window.clear(sf::Color::Black);
+}
+
+void Window::EndDraw()
+{
+	this->window.display();
 }
 
 void Window::Update()
 {
 	sf::Event event;
-	while (this->window.pollEvent(event))
+	while (window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
-			this->done = false;
-		else if (event.key.code == sf::Keyboard::F5 &&
-			event.type == sf::Event::KeyPressed)
-			this->ToogleFullscreen();
+		if (event.type == sf::Event::LostFocus)
+		{
+			focused = false;
+			eventManager.SetFocus(false);
+		}
+		else if (event.type == sf::Event::GainedFocus)
+		{
+			focused = true;
+			eventManager.SetFocus(true);
+		}
 
+		eventManager.HandleEvent(event);
 	}
+
+	eventManager.Update();
 }
 
-void Window::ToogleFullscreen()
+void Window::ToggleFullscreen(EventDetails* details)
 {
+	// invert boolean flag
 	this->fullscreen = !this->fullscreen;
-	
+
+	// destroy current window and re-created this by using new value of _isFullscreen flag
 	this->Destroy();
 	this->Create();
+}
+
+void Window::Draw(sf::Drawable& drawable)
+{
+	this->window.draw(drawable);
+}
+
+void Window::Setup(const char* title, const sf::Vector2u& size)
+{
+	focused = true; // window in focus by default
+	eventManager.AddCallback(StateType(0), "Fullscreen_toggle", &Window::ToggleFullscreen, this);
+	eventManager.AddCallback(StateType(0), "Window_close", &Window::Close, this);
+
+	this->windowTitle = title;
+	this->windowSize = size;
+	this->fullscreen = false;
+	this->done = false;
+	this->Create();
+	
+}
+
+void Window::Destroy()
+{
+	// simply close window using RenderWindow::close() method
+	this->window.close();
+}
+
+void Window::Create()
+{
+	// choose style of window by _isFullscreen class member
+	sf::Uint32 style = this->fullscreen ? sf::Style::Fullscreen : sf::Style::Default;
+
+	// create window using information that stores in class members
+	this->window.create(sf::VideoMode(this->windowSize.x, this->windowSize.y, 32), this->windowTitle, style);
 }

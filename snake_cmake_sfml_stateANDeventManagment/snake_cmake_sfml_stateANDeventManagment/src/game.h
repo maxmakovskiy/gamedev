@@ -4,30 +4,35 @@
 #include "world.h"
 #include "window.h"
 #include "Textbox.h"
+#include "StateManager.h"
+#include "EventManager.h"
+
 
 class Game
 {
 public:
-	World world;
-	Snake snake;
-	Textbox textbox;
+	//World world;
+	//Snake snake;
+	//Textbox textbox;
 
 	Game();
-	~Game() {}
+	~Game();
 
 	void HandleInput();
 	void Update();
 	void Render();
 
 	Window* GetWindow() { return &this->window; }
-	sf::Time GetElapsedTime() const { this->elapsedTime; }
+	sf::Time GetElapsed() const { this->elapsedTime; }
 
-	void RestartClock();
+	void LateUpdate();
 
 private:
 	Window window;
-
+	StateManager stateManager;
+	SharedContext sharedContext;
 	sf::Clock clock;
 	sf::Time elapsedTime;
 
+	void RestartClock();
 };
