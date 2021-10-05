@@ -6,7 +6,7 @@
 #include "BaseState.h"
 #include "EventManager.h"
 #include "IntroState.h"
-//#include "MainMenuState.h"
+#include "MainMenuState.h"
 //#include "GameState.h"
 //#include "PausedState.h"
 #include "Window.h"
