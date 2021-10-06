@@ -7,7 +7,7 @@
 #include "EventManager.h"
 #include "IntroState.h"
 #include "MainMenuState.h"
-//#include "GameState.h"
+#include "GameState.h"
 //#include "PausedState.h"
 #include "Window.h"
 
@@ -51,7 +51,7 @@ public:
 	StateManager(SharedContext* sharedContext);
 	~StateManager();
 
-	void Update(const sf::Time& delataTime);
+	void Update(sf::Time& delataTime);
 	void Draw();
 
 	void ProcessRequests();

@@ -20,7 +20,7 @@ public:
 	void Activate();
 	void Deactivate();
 
-	void Update(const sf::Time& time);
+	void Update(sf::Time& time);
 	void Draw();
 
 private:

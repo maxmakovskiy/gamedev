@@ -133,7 +133,7 @@ void Snake::Render(sf::RenderWindow& window)
 
 	SnakeContainer::iterator head = this->snakeBody.begin();
 	// setup the head and draw it
-	this->bodyRect.setFillColor(sf::Color::Yellow);
+	this->bodyRect.setFillColor(sf::Color::Blue);
 	this->bodyRect.setPosition(
 		head->position.x * this->oneRectSize,
 		head->position.y * this->oneRectSize
@@ -141,7 +141,7 @@ void Snake::Render(sf::RenderWindow& window)
 	window.draw(this->bodyRect);
 
 	// setup the body and draw it
-	this->bodyRect.setFillColor(sf::Color::Green);
+	this->bodyRect.setFillColor(sf::Color::White);
 	// itr = head + 1 => skip the head 'cause we already processing it
 	for (SnakeContainer::iterator itr = head + 1;
 		itr != this->snakeBody.end(); itr++)

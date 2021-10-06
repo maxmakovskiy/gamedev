@@ -5,7 +5,7 @@ StateManager::StateManager(SharedContext* sharedContext)
 {
 	RegisterState<IntroState>(StateType::Intro);
 	RegisterState<MainMenuState>(StateType::MainMenu);
-	//RegisterState<GameState>(StateType::Game);
+	RegisterState<GameState>(StateType::Game);
 	//RegisterState<PausedState>(StateType::Paused); 
 }
 
@@ -57,7 +57,7 @@ void StateManager::Draw()
 	}
 }
 
-void StateManager::Update(const sf::Time& deltaTime)
+void StateManager::Update(sf::Time& deltaTime)
 {
 	if (states.empty()) return;
 

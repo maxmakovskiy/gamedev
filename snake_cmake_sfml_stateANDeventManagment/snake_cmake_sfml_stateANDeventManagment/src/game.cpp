@@ -37,5 +37,5 @@ void Game::LateUpdate()
 
 void Game::RestartClock()
 {
-	elapsedTime = clock.restart();
+	elapsedTime += clock.restart();
 }

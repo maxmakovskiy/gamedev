@@ -85,7 +85,7 @@ void MainMenuState::OnDestroy()
 
 void MainMenuState::Activate()
 {
-	if (stateManager->HasState(StateType::MainMenu) &&
+	if (stateManager->HasState(StateType::Game) &&
 		buttonLabels[0].getString() == "Play")
 	{
 		buttonLabels[0].setString("Resume");
@@ -98,7 +98,7 @@ void MainMenuState::Activate()
 void MainMenuState::Deactivate()
 {}
 
-void MainMenuState::Update(const sf::Time& time)
+void MainMenuState::Update(sf::Time& time)
 {}
 
 void MainMenuState::Draw()

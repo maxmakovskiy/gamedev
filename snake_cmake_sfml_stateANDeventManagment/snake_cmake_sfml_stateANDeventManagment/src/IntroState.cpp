@@ -30,7 +30,7 @@ void IntroState::OnCreate()
 void IntroState::OnDestroy()
 {}
 
-void IntroState::Update(const sf::Time& time)
+void IntroState::Update(sf::Time& time)
 {
 	if (timePassed < 3.f)
 	{

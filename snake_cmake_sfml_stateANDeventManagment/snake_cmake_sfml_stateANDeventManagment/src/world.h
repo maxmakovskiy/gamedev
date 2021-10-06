@@ -23,7 +23,8 @@ private:
 	// circle for apple graphic
 	sf::CircleShape appleShape;
 
-	// 4 rectangles for boundary graphics
-	sf::RectangleShape bounds[4];
+	// background graphics
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
 
 };

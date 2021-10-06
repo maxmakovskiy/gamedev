@@ -34,7 +34,7 @@ public:
 	virtual void Deactivate() = 0;
 
 	// using for update state and drawing its contents
-	virtual void Update(const sf::Time& time) = 0;
+	virtual void Update(sf::Time& time) = 0;
 	virtual void Draw() = 0;
 
 	inline void SetTransparent(const bool& transparent)
