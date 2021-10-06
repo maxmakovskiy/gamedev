@@ -29,18 +29,16 @@ public:
 	~Snake() {}
 
 	// helper methods
-	// Setters:
-	inline void IncreaseScore() { this->playerScore++; }
-	inline void SetDirection(Direction _direction) { this->currentDirection = _direction; }
-	// Getters:
-	inline Direction GetDirection() const { return this->currentDirection; }
-	inline int GetSpeed() const { return this->snakeSpeed; }
+	inline void IncreaseScore() { playerScore++; }
+	inline void SetDirection(Direction _direction) { currentDirection = _direction; }
+	inline Direction GetDirection() const { return currentDirection; }
+	inline int GetSpeed() const { return snakeSpeed; }
 	sf::Vector2i GetPositionOfSnakeHead() const 
-		{ return (this->snakeBody.empty() ? sf::Vector2i(1, 1) : this->snakeBody.front().position);	}
-	inline int GetLives() const { return this->playerLives; }
-	inline int GetScore() const { return this->playerScore; }
-	inline bool IsLost() const { return this->lost; }
-	inline void DecreaseLives() { this->playerLives--; }
+		{ return (snakeBody.empty() ? sf::Vector2i(1, 1) : snakeBody.front().position);	}
+	inline int GetLives() const { return playerLives; }
+	inline int GetScore() const { return playerScore; }
+	inline bool IsLost() const { return lost; }
+	inline void DecreaseLives() { playerLives--; }
 	
 	// lose control is happening here
 	inline void Lose() { this->lost = true; }
