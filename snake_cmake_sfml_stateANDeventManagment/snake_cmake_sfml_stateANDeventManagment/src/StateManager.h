@@ -8,7 +8,7 @@
 #include "IntroState.h"
 #include "MainMenuState.h"
 #include "GameState.h"
-//#include "PausedState.h"
+#include "PausedState.h"
 #include "Window.h"
 
 // forward declaration of some classes

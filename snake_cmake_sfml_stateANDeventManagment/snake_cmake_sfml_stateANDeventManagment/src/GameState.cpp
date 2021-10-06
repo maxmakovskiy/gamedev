@@ -61,7 +61,6 @@ void GameState::OnDestroy()
 
 void GameState::Activate() 
 {
-	//snake.SetDirection(Direction::None);
 }
 
 void GameState::Deactivate() 
