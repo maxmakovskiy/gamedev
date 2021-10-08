@@ -31,8 +31,10 @@ private:
 	Window window;
 	StateManager stateManager;
 	SharedContext sharedContext;
-	sf::Clock clock;
+	sf::Clock elapsedClock;
 	sf::Time elapsedTime;
+	sf::Clock deltaClock;
+	sf::Time deltaTime;
 
 	void RestartClock();
 };

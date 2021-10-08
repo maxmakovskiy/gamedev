@@ -19,7 +19,7 @@ void Game::HandleInput() {}
 void Game::Update()
 {
 	window.Update(); // update window events
-	stateManager.Update(elapsedTime);
+	stateManager.Update(deltaTime, elapsedTime);
 }
 
 void Game::Render()
@@ -37,5 +37,6 @@ void Game::LateUpdate()
 
 void Game::RestartClock()
 {
-	elapsedTime += clock.restart();
+	deltaTime += deltaClock.restart();
+	elapsedTime = elapsedClock.restart();
 }

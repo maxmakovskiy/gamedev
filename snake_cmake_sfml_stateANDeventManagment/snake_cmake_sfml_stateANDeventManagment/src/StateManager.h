@@ -51,7 +51,7 @@ public:
 	StateManager(SharedContext* sharedContext);
 	~StateManager();
 
-	void Update(sf::Time& delataTime);
+	void Update(sf::Time& deltaTime, sf::Time& elapsedTime);
 	void Draw();
 
 	void ProcessRequests();

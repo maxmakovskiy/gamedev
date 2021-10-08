@@ -6,7 +6,7 @@
 // Name1 : 123123
 // Name2 : 1233
 // Name3 : 55
-using ScoreContainer = std::vector<std::pair<std::string, std::int>>;
+using ScoreContainer = std::vector<std::pair<std::string, int>>;
 
 class ScoreState : public BaseState
 {

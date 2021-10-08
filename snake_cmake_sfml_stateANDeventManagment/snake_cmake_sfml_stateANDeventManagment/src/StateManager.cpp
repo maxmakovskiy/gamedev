@@ -57,7 +57,8 @@ void StateManager::Draw()
 	}
 }
 
-void StateManager::Update(sf::Time& deltaTime)
+
+void StateManager::Update(sf::Time& deltaTime, sf::Time& elapsedTime)
 {
 	if (states.empty()) return;
 
@@ -87,7 +88,15 @@ void StateManager::Update(sf::Time& deltaTime)
 	}
 	else
 	{
-		states.back().second->Update(deltaTime);
+		if (states.back().first == StateType::Intro)
+		{
+			states.back().second->Update(elapsedTime);
+		}
+		else
+		{
+			states.back().second->Update(deltaTime);
+		}
+
 	}
 
 }

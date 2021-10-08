@@ -19,7 +19,7 @@ void Snake::Reset()
 
 	// Just define a couple of starting parameters
 	this->SetDirection(Direction::None);
-	this->snakeSpeed = 15; // 15 px of 1 sec
+	this->snakeSpeed = 10; // 10 px of 1 sec
 	this->playerLives = 3;  // snake has 3 lives
 	this->playerScore = 0; // starting score is 0
 	this->lost = false;
