@@ -60,6 +60,7 @@ private:
 	int snakeSpeed;				// current snake speed
 	int playerLives;				// current snake lives
 	int playerScore;			// current player score
+	std::string currentPlayerName;
 	bool lost;					// current state of losing 
 	int oneRectSize;			// size of one graphic rectangle that represents one Snake Segment
 	sf::RectangleShape bodyRect;// whole shape that will be using for rendering the snake

@@ -1,3 +1,4 @@
+#pragma once
 #include "BaseState.h"
 #include "EventManager.h"
 #include <vector>
@@ -27,11 +28,22 @@ public:
 	void Draw();
 
 private:
-	void WriteChangesToFile(const char* name);
-	void WriteToScoreTable();
-	void LoadScoreTable();
+	ScoreContainer scores;
 
+	//void WriteChangesToFile(const char* name); // write to the storage 
+	//void UpdateScoreTable(); // write to the memory
+	void LoadScoreTable(); // load from file
 
+	sf::Texture backgroundTexture;
+	sf::Sprite backgroundSprite;
+	sf::Font font;
+	sf::Text titleText;
+	sf::RectangleShape backgroundFormShape;
+	sf::RectangleShape textboxesShape[5];
+	sf::Text textboxesText[5];
+	sf::Vector2f textboxSize;
+	const int PADDING = 5;
+	sf::Vector2f startingTextboxesPosition;
 
 };
 

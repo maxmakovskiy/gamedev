@@ -10,6 +10,7 @@
 #include "GameState.h"
 #include "PausedState.h"
 #include "Window.h"
+#include "ScoreState.h"
 
 // forward declaration of some classes
 //class Window;
@@ -22,7 +23,8 @@ enum class StateType : int
 	Game,
 	Paused,
 	GameOver,
-	Credits
+	Credits,
+	ScoreTable
 };
 
 // data type for having pointers to most used classes

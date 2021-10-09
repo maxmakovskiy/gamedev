@@ -7,6 +7,7 @@ StateManager::StateManager(SharedContext* sharedContext)
 	RegisterState<MainMenuState>(StateType::MainMenu);
 	RegisterState<GameState>(StateType::Game);
 	RegisterState<PausedState>(StateType::Paused); 
+	RegisterState<ScoreState>(StateType::ScoreTable);
 }
 
 StateManager::~StateManager()

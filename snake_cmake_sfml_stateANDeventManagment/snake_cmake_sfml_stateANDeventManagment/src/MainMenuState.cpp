@@ -20,7 +20,7 @@ void MainMenuState::MouseClick(EventDetails* details)
 				stateManager->SwitchTo(StateType::Game);
 			else if (i == 1)
 			{
-			//switch to credits state
+				stateManager->SwitchTo(StateType::ScoreTable);
 			}
 			else if (i == 2)
 				stateManager->GetContext()->window->Close();
